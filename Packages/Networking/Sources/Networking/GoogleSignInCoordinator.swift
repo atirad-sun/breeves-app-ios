@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import GoogleSignIn
+@preconcurrency import GoogleSignIn
 
 /// Wraps the GoogleSignIn iOS SDK in an async API. Configures the shared
 /// `GIDSignIn` with the OAuth client ID resolved from `Secrets.plist` via
