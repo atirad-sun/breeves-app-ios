@@ -1,0 +1,19 @@
+Anthropic releases Claude Vela with 1M-token context, doubles inference throughput
+
+San Francisco — Anthropic on Tuesday released Claude Vela, a successor to its Claude Opus 4.7 model, expanding the available context window to 1 million tokens at standard API pricing and roughly doubling per-request throughput on its hosted infrastructure. Vela is available immediately through the Claude API, Amazon Bedrock, and Google Cloud Vertex AI.
+
+The 1M-token context window matches what OpenAI shipped on its GPT-5.2 series in February and what Google's Gemini 2.5 Pro offered through its Vertex preview earlier this year, but Anthropic is the first major frontier lab to extend the window without applying a long-context premium. Pricing remains $5 per million input tokens and $25 per million output tokens, identical to Opus 4.7.
+
+CEO Dario Amodei, in a blog post accompanying the release, framed the launch as primarily an efficiency story. "The bottleneck for most agentic workloads has not been raw intelligence — it's been throughput, latency, and cost per agent-step," Amodei wrote. "Vela is meaningfully better than 4.7 on long-horizon coding evaluations, but the bigger story is that we've been able to ship those gains at the same price point."
+
+Internal benchmarks shared with reviewers under embargo show Vela scoring 89.4% on SWE-bench Verified, up from 84.1% on Opus 4.7, and 76.2% on the Tau-bench retail-and-airline tool-use suite, up from 71.0%. Real-world inference latency for typical agentic loops is reported as 30-40% lower than Opus 4.7 at the same effort setting.
+
+The release also introduces what Anthropic is calling "speculative tool execution" — when Claude is reasonably confident which tool it will call next, the API begins executing that tool in parallel with the model's final reasoning step. If the model's actual choice diverges, the speculative execution is discarded; if it matches, total round-trip latency for the tool call falls by an average of 18%, according to Anthropic's published numbers.
+
+Several Anthropic launch partners have already integrated. Cursor said it began rolling Vela out to its enterprise plans on Monday and reported a 22% improvement in median agent-completion time on a sample of 30,000 customer tasks. Replit said it would make Vela the default for its Replit Agent product effective Friday. Notion confirmed Vela is now available in its AI Workflows beta.
+
+Pricing for the 1M-token context window remains a point of competitive pressure. OpenAI's GPT-5.2 charges a 2x premium on inputs above 200K tokens; Gemini 2.5 charges a 1.5x premium above 128K. Anthropic's flat pricing closes a gap that several enterprise customers had cited as a reason for splitting workloads across providers.
+
+The release does not include a corresponding Sonnet update; Anthropic confirmed that Sonnet 4.6 remains the recommended Sonnet-tier model and that a Sonnet refresh is expected in the second quarter. Haiku 4.5, released in October 2025, remains the recommended fast-tier model.
+
+Sampling parameters and extended-thinking budgets remain unchanged from Opus 4.7 — both are removed in favor of adaptive thinking and the effort parameter. The new task-budget feature, which entered public beta with Opus 4.7, is now generally available without the beta header.
