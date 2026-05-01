@@ -20,9 +20,13 @@ const MODEL = "claude-sonnet-4-6";
 const MAX_TOKENS = 1500;
 const API_URL = "https://api.anthropic.com/v1/messages";
 
-const HERE = new URL(".", import.meta.url).pathname;
-const CANNED_DIR = `${HERE}canned`;
-const OUT_DIR = `${CANNED_DIR}/_out`;
+// Resolve the script's own directory. fileURLToPath decodes %20 etc. so paths
+// with spaces (e.g. "Sunatrd Projects/") survive readDir/readFile/writeFile.
+import { fromFileUrl } from "https://deno.land/std@0.224.0/path/from_file_url.ts";
+import { join } from "https://deno.land/std@0.224.0/path/join.ts";
+const HERE = fromFileUrl(new URL(".", import.meta.url));
+const CANNED_DIR = join(HERE, "canned");
+const OUT_DIR = join(CANNED_DIR, "_out");
 
 interface Usage {
     input_tokens: number;
@@ -145,7 +149,7 @@ async function main() {
         const name = txtFiles[i];
         const basename = name.replace(/\.txt$/, "");
         const topic = inferTopic(name);
-        const raw = await Deno.readTextFile(`${CANNED_DIR}/${name}`);
+        const raw = await Deno.readTextFile(join(CANNED_DIR, name));
 
         try {
             const resp = await callClaude(apiKey, topic, raw);
@@ -168,7 +172,7 @@ async function main() {
                 continue;
             }
 
-            const outPath = `${OUT_DIR}/${basename}.json`;
+            const outPath = join(OUT_DIR, `${basename}.json`);
             await Deno.writeTextFile(
                 outPath,
                 JSON.stringify(parsed, null, 2) + "\n",
