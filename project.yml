@@ -1,0 +1,77 @@
+name: Breeves
+options:
+  bundleIdPrefix: com.breeves
+  deploymentTarget:
+    iOS: "18.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: ""
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    SWIFT_STRICT_CONCURRENCY: minimal
+    CODE_SIGN_STYLE: Automatic
+    # Reversed Google OAuth client ID, e.g.
+    # com.googleusercontent.apps.123456789-abcdefg
+    # Defaulted to empty so builds work without Secrets.plist (mock backend).
+    # Override via xcconfig or Secrets/CI for the live Google Sign-In flow.
+    GOOGLE_REVERSED_CLIENT_ID: ""
+
+packages:
+  Models:
+    path: Packages/Models
+  DesignSystem:
+    path: Packages/DesignSystem
+  Networking:
+    path: Packages/Networking
+  Persistence:
+    path: Packages/Persistence
+
+targets:
+  Breeves:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: Breeves
+    resources:
+      - path: Breeves/Resources
+        optional: true
+      - path: Breeves/Assets.xcassets
+        optional: true
+    dependencies:
+      - package: Models
+      - package: DesignSystem
+      - package: Networking
+      - package: Persistence
+    info:
+      path: Breeves/Info.plist
+      properties:
+        CFBundleDisplayName: Breeves
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "42"
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+          UIImageName: LaunchBrassMark
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UIRequiredDeviceCapabilities:
+          - arm64
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        ITSAppUsesNonExemptEncryption: false
+        CFBundleURLTypes:
+          - CFBundleURLSchemes:
+              - $(GOOGLE_REVERSED_CLIENT_ID)
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.breeves.app
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleDefault
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO

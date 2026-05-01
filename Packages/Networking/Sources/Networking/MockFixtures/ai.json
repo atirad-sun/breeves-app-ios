@@ -1,0 +1,158 @@
+[
+  {
+    "id": "ai-1",
+    "headline": "OpenAI rolls out reasoning model updates ahead of GPT-5 release window",
+    "estimated_read_time_minutes": 4,
+    "source": "The Information",
+    "universal_mode": {
+      "gist": "OpenAI quietly updated its o3 reasoning models, improving benchmark scores by 12% while reducing compute costs per query.",
+      "ripple_effect": "Competitors including Anthropic and Google DeepMind face renewed pressure to accelerate their own chain-of-thought deployments.",
+      "personal_impact": "Enterprises on existing API contracts gain free performance improvements; new pricing tiers may follow at contract renewal.",
+      "key_metric": "o3-mini now scores 91.4% on MATH — up from 85.7% in January."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Architecture Shift",
+      "bullet_1_text": "OpenAI moved from a monolithic inference pass to a multi-stage verification loop, drastically improving logical consistency on multi-hop problems.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "With cloud AI infrastructure spend projected at $320B in 2025, a 12% efficiency gain shifts hundreds of millions in margin toward OpenAI and away from GPU vendors.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Critics argue benchmark improvements mask real-world performance gaps; enterprise buyers cite hallucination rates — not benchmark scores — as the blocking issue."
+    },
+    "executive_mode": {
+      "the_intel": "OpenAI shipped silent model upgrades to o3 and o3-mini, boosting reasoning benchmarks and cutting per-token costs by an estimated 8%.",
+      "why_flagged": "Any organization using AI for structured decision support — legal, financial, medical — benefits directly. Cost reductions improve build-vs-buy calculations.",
+      "open_questions": "Will OpenAI publish a technical paper? When does GPT-5 land, and does it supersede o3 entirely?",
+      "decision_action": "Revisit AI vendor lock-in posture. If you are on Azure OpenAI, confirm upgrade path and test critical workflows against updated model."
+    }
+  },
+  {
+    "id": "ai-2",
+    "headline": "Anthropic's Claude 4 Sonnet tops enterprise adoption charts for the third consecutive quarter",
+    "estimated_read_time_minutes": 3,
+    "source": "Forbes",
+    "universal_mode": {
+      "gist": "Enterprise adoption of Claude 4 Sonnet surpassed GPT-4o usage in legal, finance, and compliance sectors by Q1 2025 survey data.",
+      "ripple_effect": "The shift reflects growing enterprise preference for models with auditable reasoning traces over raw capability scores.",
+      "personal_impact": "Organizations standardizing on Claude gain tighter data-residency controls — a key procurement unlock in regulated industries.",
+      "key_metric": "47% of Fortune 500 legal teams now use Claude as their primary AI assistant."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Adoption Signal",
+      "bullet_1_text": "Enterprise procurement decisions are consolidating around two vendors — OpenAI and Anthropic — leaving third-tier players scrambling for niche positioning.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Anthropic raised $4B at a $60B valuation in March; sustained enterprise adoption validates that multiple large-cap AI companies can coexist profitably.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "OpenAI's enterprise contracts often include longer lock-ins and deeper Azure integration — Anthropic's lead may be survey-specific rather than structural."
+    },
+    "executive_mode": {
+      "the_intel": "Claude 4 Sonnet has become the default enterprise AI for regulated industries, particularly in legal and compliance workflows.",
+      "why_flagged": "If your organization hasn't benchmarked Claude against your current vendor in the past 6 months, your procurement decision may be stale.",
+      "open_questions": "What does Anthropic's constitutional AI constraint mean for your specific use case? Are there tasks where it creates friction?",
+      "decision_action": "Schedule a head-to-head evaluation of Claude 4 Sonnet vs. current vendor on your three highest-value workflows. Decision by end of Q2."
+    }
+  },
+  {
+    "id": "ai-3",
+    "headline": "EU AI Act enforcement phase begins; hyperscalers accelerate compliance audits",
+    "estimated_read_time_minutes": 5,
+    "source": "Financial Times",
+    "universal_mode": {
+      "gist": "The EU AI Act's high-risk system provisions entered enforcement on May 1st, triggering mandatory compliance audits across cloud AI providers.",
+      "ripple_effect": "Legal departments in EU-exposed companies are tripling AI governance headcount; compliance costs estimated at €2–8M per affected system.",
+      "personal_impact": "Any business deploying AI in HR, credit scoring, or critical infrastructure faces audit exposure before year-end.",
+      "key_metric": "Fines of up to €35M or 7% of global revenue for General Purpose AI non-compliance."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Regulatory Moment",
+      "bullet_1_text": "The Act creates a four-tier risk classification; most enterprise AI tools fall into the \"limited risk\" or \"high risk\" categories, each with distinct documentation requirements.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Compliance tooling is the surprise winner: vendors like Credo AI, Holistic AI, and Scale AI's governance arm are seeing 300%+ pipeline growth.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Some legal scholars argue the Act's technical annexes are ambiguous enough that enforcement will be inconsistent for the first 24 months — a practical grace period for laggards."
+    },
+    "executive_mode": {
+      "the_intel": "EU AI Act enforcement is live. High-risk AI systems must now have documented conformity assessments, human oversight mechanisms, and incident logs.",
+      "why_flagged": "Exposure is broad: recruiting tools, loan processing, document classification, and customer-risk scoring all qualify as high-risk under Annex III.",
+      "open_questions": "Has your legal team classified every AI system your company operates? Have you mapped third-party AI vendors' compliance status?",
+      "decision_action": "Commission an internal AI system inventory this week. Classify by risk tier. Engage external counsel if any system touches Annex III use cases."
+    }
+  },
+  {
+    "id": "ai-4",
+    "headline": "NVIDIA's next-generation Blackwell Ultra chips begin shipping to hyperscalers",
+    "estimated_read_time_minutes": 3,
+    "source": "Bloomberg",
+    "universal_mode": {
+      "gist": "NVIDIA began shipping Blackwell Ultra GPUs to Microsoft, Google, and Amazon this week, offering a 2.5× training throughput improvement over the previous H100.",
+      "ripple_effect": "Cloud GPU pricing is expected to drop 15–20% over 18 months as supply constraints ease, reducing the cost of training and inference for all players.",
+      "personal_impact": "AI startups and mid-market firms will benefit from cheaper inference APIs as hyperscalers pass on GPU efficiency gains.",
+      "key_metric": "Blackwell Ultra delivers 20 petaFLOPS of FP8 compute per card — up from 8 petaFLOPS on H100."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Hardware Moment",
+      "bullet_1_text": "Blackwell Ultra's memory bandwidth breakthrough (8 TB/s HBM4) is the real story — it unlocks 1T+ parameter models as economically viable at inference, not just training.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "NVIDIA's data center revenue is on track to hit $130B in FY2025; Blackwell allocation gives hyperscalers a structural compute advantage over enterprise on-prem deployments.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "AMD's MI350X ships in Q3 and benchmarks suggest near-parity on transformer workloads — NVIDIA's moat may narrow faster than the market expects."
+    },
+    "executive_mode": {
+      "the_intel": "NVIDIA's Blackwell Ultra has entered production; hyperscalers now have access to 2.5× the compute density of H100 at similar power envelopes.",
+      "why_flagged": "GPU supply has been the binding constraint on AI capability expansion. Easing supply changes the competitive calculus for startups and incumbents alike.",
+      "open_questions": "When will spot GPU pricing on Lambda Labs and CoreWeave reflect the new supply? 6 months? 12?",
+      "decision_action": "If you're making infrastructure commitments in the next 90 days, model both current H100 pricing and a 15% reduction scenario. Don't lock into long-term contracts at peak rates."
+    }
+  },
+  {
+    "id": "ai-5",
+    "headline": "Google DeepMind publishes AlphaFold 3 protein folding results with 40% accuracy improvement",
+    "estimated_read_time_minutes": 4,
+    "source": "Nature",
+    "universal_mode": {
+      "gist": "DeepMind's AlphaFold 3 accurately predicts interactions between proteins, DNA, RNA, and small molecules — a significant expansion over AlphaFold 2's protein-only scope.",
+      "ripple_effect": "Drug discovery timelines could compress from 12 to 4 years for target identification; major pharma companies are already integrating the API.",
+      "personal_impact": "For investors in biotech, AlphaFold 3 materially de-risks early-stage discovery bets — but may also disrupt incumbent CRO revenue models.",
+      "key_metric": "40% improvement in accuracy on protein–ligand binding prediction vs. the best prior methods."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Science",
+      "bullet_1_text": "AlphaFold 3 uses a diffusion-based architecture rather than the transformer-based approach of AF2, enabling multi-molecule complex prediction within a unified framework.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Global drug discovery is a $50B+ services market; if AI shrinks the target identification phase by 60%, CROs face existential disruption across their early-stage service lines.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Several structural biologists have flagged that AF3's accuracy advantage disappears on disordered protein regions — still a critical limitation for intrinsically disordered protein drug targets."
+    },
+    "executive_mode": {
+      "the_intel": "AlphaFold 3 can now predict how drug candidates bind to their targets with unprecedented accuracy, accelerating early drug discovery.",
+      "why_flagged": "Any portfolio company in biotech or anyone considering investment in discovery-stage biopharma needs to understand how AF3 changes the competitive landscape.",
+      "open_questions": "Which CRO contracts in your portfolio are most exposed to AF3-driven disruption? Which discovery-stage assets are now more valuable?",
+      "decision_action": "Set up a call with your biotech portfolio companies and their scientific advisors within 30 days. Identify assets where AF3 could compress timelines — and adjust valuation models accordingly."
+    }
+  },
+  {
+    "id": "ai-6",
+    "headline": "Microsoft integrates Copilot deeply into Teams, triggering antitrust review in Brussels",
+    "estimated_read_time_minutes": 3,
+    "source": "The Verge",
+    "universal_mode": {
+      "gist": "Microsoft announced deep Copilot integration across Teams, Outlook, and Excel — bundling AI features with existing M365 licenses at no additional cost.",
+      "ripple_effect": "Standalone AI productivity tools (Notion AI, Grammarly Business, Otter.ai) face existential pressure as Microsoft effectively makes the category free.",
+      "personal_impact": "IT buyers can justify cancelling point-solution AI contracts, reducing software spend by an estimated 15–25% on AI tooling line items.",
+      "key_metric": "Copilot bundle covers 400M+ M365 commercial seats globally."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Bundling Play",
+      "bullet_1_text": "Microsoft is replicating its Office bundling strategy from the 1990s — but with AI. Regulators have seen this movie before, which explains the accelerated Brussels review.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "The EU's DMA (Digital Markets Act) may classify Microsoft as a \"gatekeeper\" for productivity software, requiring unbundling of Copilot features — a material revenue risk if upheld.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Enterprise IT buyers largely welcome the bundle; the antitrust risk is a Brussels and DOJ story, not an end-user adoption story."
+    },
+    "executive_mode": {
+      "the_intel": "Microsoft is bundling advanced AI into M365 at no incremental cost — effectively subsidizing AI adoption while pressuring standalone AI software vendors.",
+      "why_flagged": "Any business currently paying separately for AI writing, meeting transcription, or document summarization tools should model a switch to Copilot.",
+      "open_questions": "How long until the EU forces unbundling? What's the risk of building internal workflows on Copilot if it gets restructured?",
+      "decision_action": "Audit AI tooling spend this quarter. Model cost savings from consolidating onto Copilot. Flag the regulatory uncertainty as a reason to maintain contractual flexibility."
+    }
+  }
+]

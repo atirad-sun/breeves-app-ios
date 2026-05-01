@@ -1,0 +1,158 @@
+[
+  {
+    "id": "geo-1",
+    "headline": "US-China semiconductor export controls tighten; TSMC restricts advanced node sales",
+    "estimated_read_time_minutes": 5,
+    "source": "Financial Times",
+    "universal_mode": {
+      "gist": "The Biden-era export control framework was tightened this week; TSMC confirmed it will halt advanced node (2nm and below) wafer sales to any entity with ≥25% Chinese beneficial ownership.",
+      "ripple_effect": "Chinese fabless chip designers face a structural ceiling at 7nm — sufficient for most consumer applications but insufficient for frontier AI training.",
+      "personal_impact": "Any investment thesis dependent on Chinese AI compute parity with the US within 5 years should be revised; the gap is widening, not closing.",
+      "key_metric": "2nm restricted for China; Huawei's domestic 7nm production estimated at 50k wafers/month — vs. 1.4M/month for a single TSMC fab."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Geopolitical Architecture",
+      "bullet_1_text": "This is semiconductor statecraft: the US is using supply chain leverage to impose a persistent capability ceiling on Chinese AI development, buying time for domestic US chip production.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "The immediate financial impact falls on ASML (EUV tool sales restricted), TSMC (revenue mix shift away from China), and Qualcomm (China accounts for 60%+ of revenue).",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "China's SMIC is rapidly improving 7nm yields; CXMT is moving into advanced DRAM. The controls slow, but do not stop, Chinese progress — and accelerate Chinese domestic investment."
+    },
+    "executive_mode": {
+      "the_intel": "The US has effectively put a hard ceiling on Chinese AI chip access. This is a permanent structural feature of the geopolitical landscape, not a temporary measure.",
+      "why_flagged": "Any semiconductor, AI infrastructure, or China-exposed tech investment requires a fresh technology access analysis — what your portfolio companies can and cannot sell into China.",
+      "open_questions": "How much China revenue does each of your portfolio companies generate from products now restricted or at risk? What's the 12-month impact if China access closes entirely?",
+      "decision_action": "Commission a China revenue exposure analysis across your portfolio. For every company with >10% China revenue, model a zero-China scenario and assess strategic options."
+    }
+  },
+  {
+    "id": "geo-2",
+    "headline": "NATO allies agree to increase defense spending to 3% of GDP amid Eastern European pressure",
+    "estimated_read_time_minutes": 4,
+    "source": "Reuters",
+    "universal_mode": {
+      "gist": "At the Brussels summit, 28 of 32 NATO members formally agreed to a new 3% GDP defense spending target, up from the 2% guideline established in 2014.",
+      "ripple_effect": "European defense companies — Rheinmetall, BAE Systems, Leonardo, Saab — face a multi-decade procurement supercycle as member states rebuild military capabilities.",
+      "personal_impact": "For investors underweight European defense, this is a structural, policy-underwritten demand signal — distinct from cyclical defense spending.",
+      "key_metric": "A 1% GDP increase across NATO collectively represents approximately €300B in annual defense spending uplift."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Geopolitical Architecture",
+      "bullet_1_text": "The shift from 2% to 3% is not marginal — it represents a generational change in European strategic posture, triggered by Russia's Ukraine invasion and US reliability concerns.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Defense procurement has 10–15 year program cycles; today's spending commitments translate into orders that will generate revenue well into the 2030s.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Political risk is real: governments change, and defense spending commitments have historically been honored in the breach. Four NATO members have still not met the 2% target."
+    },
+    "executive_mode": {
+      "the_intel": "NATO is committing to 3% GDP defense spending. This is structural, bipartisan, and driven by threat perception — not a policy cycle that reverses easily.",
+      "why_flagged": "European defense is one of the clearest long-term demand signals in global markets. Most institutional portfolios remain systematically underweight.",
+      "open_questions": "Which European defense primes have the best positioning on the highest-growth categories: drones, cyber, ammunition, satellite communications?",
+      "decision_action": "Evaluate European defense exposure in your portfolio. Consider Rheinmetall, KNDS, Saab, and the NATO-aligned missile manufacturers as starting points for due diligence."
+    }
+  },
+  {
+    "id": "geo-3",
+    "headline": "India surpasses China as world's fastest-growing major economy for third straight year",
+    "estimated_read_time_minutes": 3,
+    "source": "Bloomberg",
+    "universal_mode": {
+      "gist": "IMF revised India's 2025 GDP growth forecast to 7.1%, vs. China at 4.6% — India has now outpaced China for three consecutive years.",
+      "ripple_effect": "Supply chain diversification accelerates as global manufacturers accelerate \"China+1\" strategies, with India as the primary beneficiary.",
+      "personal_impact": "For investors, India's growth premium is now durable enough to warrant a strategic overweight, not just a tactical position.",
+      "key_metric": "7.1% GDP growth forecast — 1.53× China's pace for the third consecutive year."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Geopolitical Architecture",
+      "bullet_1_text": "India's growth is driven by digital infrastructure (UPI processes more transactions than Visa globally), manufacturing FDI, and a demographic dividend — 68% of the population is working age.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Apple now assembles 14% of iPhones in India; Apple, Google, and Samsung are all deepening Indian manufacturing commitments, creating a virtuous cycle of industrial development.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "India's growth is real but fragile: infrastructure gaps, bureaucratic friction, and an underdeveloped financial system constrain the ceiling. 7% growth in India delivers less economic density than 5% growth in China."
+    },
+    "executive_mode": {
+      "the_intel": "India is the world's fastest-growing major economy for the third consecutive year. This is now a trend, not an anomaly.",
+      "why_flagged": "Most Western institutional portfolios have India exposure via broad EM funds — typically at a fraction of India's actual weight in global growth.",
+      "open_questions": "What is your direct India allocation vs. your EM-blend India exposure? Are you capturing the specific sectors driving outperformance: digital infrastructure, manufacturing, consumer?",
+      "decision_action": "Assess dedicated India allocation. Consider whether a direct India fund or select large-cap exposure is appropriate relative to your EM strategy. Review by end of Q2."
+    }
+  },
+  {
+    "id": "geo-4",
+    "headline": "Red Sea shipping disruptions persist; global container rates rise 40% from January lows",
+    "estimated_read_time_minutes": 3,
+    "source": "Lloyd's List",
+    "universal_mode": {
+      "gist": "Houthi attacks in the Red Sea have rerouted 85% of Asia-Europe container traffic around the Cape of Good Hope, adding 10–14 days to journey times.",
+      "ripple_effect": "European manufacturers face sustained input cost inflation; auto and electronics producers have already issued supply chain warnings for H2 2025.",
+      "personal_impact": "Companies with just-in-time inventory models and Asia-sourced components face margin compression through Q3 — earnings revisions likely.",
+      "key_metric": "Asia-Europe spot container rates: $5,200/TEU — up 40% from the January trough."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Geopolitical Architecture",
+      "bullet_1_text": "The Red Sea disruption is structural while Houthi capability remains intact — a military solution requires sustained naval engagement that no Western government is currently willing to sustain.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "The Cape rerouting is not merely expensive; it effectively reduces global container fleet capacity by 15–20% (more ships needed for same routes), keeping rates elevated regardless of demand.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Air freight carriers are the surprise winner: urgent cargo diversion to air has boosted airfreight rates 25%; companies like FedEx and DHL benefit directly."
+    },
+    "executive_mode": {
+      "the_intel": "Red Sea shipping disruption is not resolving. Plan for elevated container rates and extended transit times through at least Q4 2025.",
+      "why_flagged": "Any business sourcing from Asia for European or Middle Eastern markets faces cost inflation and inventory timing risk. This is now a planning assumption, not a risk scenario.",
+      "open_questions": "Which of your portfolio companies or business units are most exposed to Asia-Europe shipping costs? Have they adjusted their H2 inventory and pricing strategies?",
+      "decision_action": "Meet with supply chain leads at each exposed business this week. Ensure H2 cost models reflect $5,000+ container rates. Model the impact of rates returning to $8,000."
+    }
+  },
+  {
+    "id": "geo-5",
+    "headline": "Saudi Arabia and Iran restore diplomatic ties, reshaping Middle East energy alliances",
+    "estimated_read_time_minutes": 4,
+    "source": "The Economist",
+    "universal_mode": {
+      "gist": "Saudi Arabia and Iran held their first formal joint economic commission since 2016, signaling that the 2023 China-brokered rapprochement is deepening beyond symbolic gestures.",
+      "ripple_effect": "The normalization reduces the risk premium on Gulf oil; GCC sovereign wealth funds are now co-investing in emerging markets rather than competing.",
+      "personal_impact": "A more stable Gulf reduces energy tail-risk for global portfolios; it also strengthens China's position as the region's preferred strategic broker.",
+      "key_metric": "Brent crude risk premium attributable to Iran-Saudi tension has compressed by an estimated $4–6/bbl since the rapprochement."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Geopolitical Architecture",
+      "bullet_1_text": "China's successful mediation gives Beijing a template for regional influence through economic statecraft — a direct challenge to US security guarantees as the region's organizing principle.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "GCC sovereign wealth funds (ADIA, PIF, QIA) collectively hold $3.5T in assets; their coordination rather than competition changes the dynamics of global capital allocation in emerging markets.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "The rapprochement is tactical, not structural: Saudi and Iranian interests diverge fundamentally on Yemen, Iraq, and Lebanon. Diplomatic temperature can reverse quickly on regional events."
+    },
+    "executive_mode": {
+      "the_intel": "Saudi-Iran normalization is progressing. The risk premium on Gulf oil is compressing. China's influence in the region is institutionalizing.",
+      "why_flagged": "Energy investors and anyone with Gulf sovereign wealth fund relationships needs to understand the new cooperation dynamic and its implications for deal flow and co-investment.",
+      "open_questions": "How is the Saudi-Iran détente affecting Iranian oil supply to market — and therefore your energy price assumptions?",
+      "decision_action": "Review energy price assumptions in any portfolio model that uses Gulf tension as a supply disruption scenario. Revise the probability upward for a stable Gulf, lower for conflict."
+    }
+  },
+  {
+    "id": "geo-6",
+    "headline": "Taiwan Strait tensions ease as US-China trade negotiators resume Geneva framework talks",
+    "estimated_read_time_minutes": 3,
+    "source": "Wall Street Journal",
+    "universal_mode": {
+      "gist": "US and Chinese trade negotiators met in Geneva for the first formal session in 14 months, agreeing on a framework for tariff discussion — without any specific rollbacks.",
+      "ripple_effect": "The meeting alone reduced Taiwan Strait geopolitical risk pricing; semiconductor and defense equities reacted in opposite directions.",
+      "personal_impact": "For investors, the diplomatic signal reduces the probability of a near-term shock event — without resolving the structural competition.",
+      "key_metric": "US-China trade negotiator contact gap closed from 14 months to a scheduled 60-day review cadence."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Geopolitical Architecture",
+      "bullet_1_text": "The Geneva framework is about process, not substance: both sides need to demonstrate dialogue to their domestic audiences — the US ahead of midterm prep, China ahead of the Party plenum.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "From a market perspective, the key variable is tariff levels. Current 145% US tariffs on Chinese imports are economically damaging to both sides; any reduction materially benefits consumer prices.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Structural competition between the US and China is intensifying on every dimension — semiconductors, AI, space, standards bodies. Diplomatic dialogue is a surface feature, not a trend reversal."
+    },
+    "executive_mode": {
+      "the_intel": "US-China trade talks have resumed. The probability of near-term tariff escalation has declined. The probability of tariff reduction is still low but non-zero.",
+      "why_flagged": "Any business with significant US-China trade exposure should be tracking the Geneva framework schedule — potential tariff changes move in 60-day windows now.",
+      "open_questions": "What is your tariff scenario modeling? Have you stress-tested for both a 20% tariff reduction and a 20% increase from current levels?",
+      "decision_action": "Brief your CFO and supply chain head on the Geneva framework. Set a 60-day review calendar. Do not assume the current tariff structure is stable in either direction."
+    }
+  }
+]

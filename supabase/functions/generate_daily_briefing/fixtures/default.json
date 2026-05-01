@@ -1,0 +1,73 @@
+[
+  {
+    "id": "default-1",
+    "headline": "{{topic}}: Daily fixture article 1 — placeholder copy for unrecognised topics",
+    "estimated_read_time_minutes": 3,
+    "source": "Stub",
+    "universal_mode": {
+      "gist": "This is a placeholder gist. Replace with topic-specific content when fixtures are added.",
+      "ripple_effect": "Placeholder ripple effect.",
+      "personal_impact": "Placeholder personal impact.",
+      "key_metric": "Placeholder key metric."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "Bullet One",
+      "bullet_1_text": "Placeholder.",
+      "bullet_2_header": "Bullet Two",
+      "bullet_2_text": "Placeholder.",
+      "bullet_3_header": "Bullet Three",
+      "bullet_3_text": "Placeholder."
+    },
+    "executive_mode": {
+      "the_intel": "Placeholder.",
+      "why_flagged": "Placeholder.",
+      "open_questions": "Placeholder.",
+      "decision_action": "Placeholder."
+    }
+  },
+  {
+    "id": "default-2",
+    "headline": "{{topic}}: Daily fixture article 2",
+    "estimated_read_time_minutes": 4,
+    "source": "Stub",
+    "universal_mode": { "gist": "Placeholder.", "ripple_effect": "Placeholder.", "personal_impact": "Placeholder.", "key_metric": "Placeholder." },
+    "topic_specific_mode": { "bullet_1_header": "Bullet One", "bullet_1_text": "Placeholder.", "bullet_2_header": "Bullet Two", "bullet_2_text": "Placeholder.", "bullet_3_header": "Bullet Three", "bullet_3_text": "Placeholder." },
+    "executive_mode": { "the_intel": "Placeholder.", "why_flagged": "Placeholder.", "open_questions": "Placeholder.", "decision_action": "Placeholder." }
+  },
+  {
+    "id": "default-3",
+    "headline": "{{topic}}: Daily fixture article 3",
+    "estimated_read_time_minutes": 3,
+    "source": "Stub",
+    "universal_mode": { "gist": "Placeholder.", "ripple_effect": "Placeholder.", "personal_impact": "Placeholder.", "key_metric": "Placeholder." },
+    "topic_specific_mode": { "bullet_1_header": "Bullet One", "bullet_1_text": "Placeholder.", "bullet_2_header": "Bullet Two", "bullet_2_text": "Placeholder.", "bullet_3_header": "Bullet Three", "bullet_3_text": "Placeholder." },
+    "executive_mode": { "the_intel": "Placeholder.", "why_flagged": "Placeholder.", "open_questions": "Placeholder.", "decision_action": "Placeholder." }
+  },
+  {
+    "id": "default-4",
+    "headline": "{{topic}}: Daily fixture article 4",
+    "estimated_read_time_minutes": 5,
+    "source": "Stub",
+    "universal_mode": { "gist": "Placeholder.", "ripple_effect": "Placeholder.", "personal_impact": "Placeholder.", "key_metric": "Placeholder." },
+    "topic_specific_mode": { "bullet_1_header": "Bullet One", "bullet_1_text": "Placeholder.", "bullet_2_header": "Bullet Two", "bullet_2_text": "Placeholder.", "bullet_3_header": "Bullet Three", "bullet_3_text": "Placeholder." },
+    "executive_mode": { "the_intel": "Placeholder.", "why_flagged": "Placeholder.", "open_questions": "Placeholder.", "decision_action": "Placeholder." }
+  },
+  {
+    "id": "default-5",
+    "headline": "{{topic}}: Daily fixture article 5",
+    "estimated_read_time_minutes": 3,
+    "source": "Stub",
+    "universal_mode": { "gist": "Placeholder.", "ripple_effect": "Placeholder.", "personal_impact": "Placeholder.", "key_metric": "Placeholder." },
+    "topic_specific_mode": { "bullet_1_header": "Bullet One", "bullet_1_text": "Placeholder.", "bullet_2_header": "Bullet Two", "bullet_2_text": "Placeholder.", "bullet_3_header": "Bullet Three", "bullet_3_text": "Placeholder." },
+    "executive_mode": { "the_intel": "Placeholder.", "why_flagged": "Placeholder.", "open_questions": "Placeholder.", "decision_action": "Placeholder." }
+  },
+  {
+    "id": "default-6",
+    "headline": "{{topic}}: Daily fixture article 6",
+    "estimated_read_time_minutes": 4,
+    "source": "Stub",
+    "universal_mode": { "gist": "Placeholder.", "ripple_effect": "Placeholder.", "personal_impact": "Placeholder.", "key_metric": "Placeholder." },
+    "topic_specific_mode": { "bullet_1_header": "Bullet One", "bullet_1_text": "Placeholder.", "bullet_2_header": "Bullet Two", "bullet_2_text": "Placeholder.", "bullet_3_header": "Bullet Three", "bullet_3_text": "Placeholder." },
+    "executive_mode": { "the_intel": "Placeholder.", "why_flagged": "Placeholder.", "open_questions": "Placeholder.", "decision_action": "Placeholder." }
+  }
+]

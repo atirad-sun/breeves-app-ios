@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  models-tests:
+    name: Models package tests
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select latest Xcode 16+
+        run: |
+          # Pick the highest-versioned Xcode 16 or 17 available on the runner.
+          XCODE=$(ls -1 /Applications/ | grep -E '^Xcode_(16|17)' | sort -V | tail -1)
+          if [ -z "$XCODE" ]; then
+            echo "No Xcode 16+ found on runner" >&2
+            ls -1 /Applications/ | grep -i xcode || true
+            exit 1
+          fi
+          echo "Selecting /Applications/$XCODE"
+          sudo xcode-select -s "/Applications/$XCODE/Contents/Developer"
+
+      - name: Show Swift / Xcode versions
+        run: |
+          swift --version
+          xcodebuild -version
+
+      - name: swift test
+        working-directory: Packages/Models
+        run: swift test
+
+  ios-build:
+    name: iOS app build
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select latest Xcode 16+
+        run: |
+          XCODE=$(ls -1 /Applications/ | grep -E '^Xcode_(16|17)' | sort -V | tail -1)
+          if [ -z "$XCODE" ]; then
+            echo "No Xcode 16+ found on runner" >&2
+            ls -1 /Applications/ | grep -i xcode || true
+            exit 1
+          fi
+          echo "Selecting /Applications/$XCODE"
+          sudo xcode-select -s "/Applications/$XCODE/Contents/Developer"
+
+      - name: Show Swift / Xcode versions
+        run: |
+          swift --version
+          xcodebuild -version
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build for iOS Simulator
+        run: |
+          xcodebuild \
+            -scheme Breeves \
+            -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build

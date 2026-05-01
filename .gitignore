@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+*.swp
+
+# Xcode / build
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# SPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Secrets
+Breeves/Secrets.plist
+**/Secrets.plist
+.env
+.env.local
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# Bundle (handoff is a one-time export, keep out of repo)
+Breeves\ iOS-handoff.zip
+handoff/
+
+# Editor
+.idea/
+.vscode/

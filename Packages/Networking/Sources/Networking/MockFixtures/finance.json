@@ -1,0 +1,158 @@
+[
+  {
+    "id": "finance-1",
+    "headline": "Federal Reserve signals two rate cuts in 2025 as inflation cools to 2.4%",
+    "estimated_read_time_minutes": 4,
+    "source": "Wall Street Journal",
+    "universal_mode": {
+      "gist": "Fed Chair Powell indicated the FOMC sees two 25bp rate cuts in 2025, contingent on inflation staying below 2.5% through Q2.",
+      "ripple_effect": "Treasury yields dropped 14bp on the announcement; mortgage rates are expected to follow with a 4–6 week lag.",
+      "personal_impact": "Refinancing windows will reopen in Q3 for the first time since 2021; debt-heavy portfolios benefit from cheaper carry costs.",
+      "key_metric": "Core PCE at 2.4% — closest to the 2% target since March 2021."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Market Move",
+      "bullet_1_text": "Two cuts represent the dovish end of FOMC projections; markets had priced in 1.5 cuts before the announcement, explaining the yield compression.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Private equity portfolio companies carrying floating-rate debt see immediate relief — roughly $180B in PE-backed leveraged loans reprice within 60 days of each cut.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Several Fed governors remain hawkish on services inflation, suggesting the two-cut path is fragile — a strong May jobs report could push guidance back toward one cut."
+    },
+    "executive_mode": {
+      "the_intel": "The Fed has telegraphed two 25bp cuts in 2025, with the first likely in September. This is the clearest dovish signal since the hiking cycle began.",
+      "why_flagged": "Rate-sensitive assets — real estate, leveraged credit, long-duration equity — re-rate upward. Cost of capital improves for new investments.",
+      "open_questions": "What's the probability of the September cut given the next four CPI prints? How exposed is your portfolio to a \"one cut\" scenario?",
+      "decision_action": "Stress-test your portfolio company financial models against three scenarios: 2 cuts, 1 cut, no cut. Ensure debt covenants hold in the no-cut case."
+    }
+  },
+  {
+    "id": "finance-2",
+    "headline": "Blackstone closes $30B infrastructure fund, largest in private market history",
+    "estimated_read_time_minutes": 3,
+    "source": "Bloomberg",
+    "universal_mode": {
+      "gist": "Blackstone's BXINFRA fund closed at $30.4B, surpassing its $25B target and setting a private infrastructure fund record.",
+      "ripple_effect": "The raise signals sustained LP appetite for real assets as a hedge against inflation persistence; competing managers are accelerating their own infrastructure raises.",
+      "personal_impact": "For institutional allocators, Blackstone's successful close validates the 10–15% infrastructure allocation trend — and creates benchmark pressure for smaller managers.",
+      "key_metric": "$30.4B — new global record for a single infrastructure fund close."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Market Move",
+      "bullet_1_text": "Infrastructure's appeal is structural: government underinvestment, energy transition capex, and AI data center buildout create a 20-year deployment opportunity.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "With $30B deployed at 6–8% target returns, the fund generates $1.8–2.4B in annual fees and carry for Blackstone — a material contribution to distributable earnings.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Concentration risk: infrastructure mega-funds chase the same large-cap assets, compressing returns for all. Smaller GPs with operational expertise may outperform on a net-IRR basis."
+    },
+    "executive_mode": {
+      "the_intel": "Blackstone just raised the largest infrastructure fund ever. The asset class is now firmly institutional, with capital pouring in from sovereign wealth funds and pension allocators globally.",
+      "why_flagged": "If you have real assets or infrastructure exposure in your portfolio, this is a tailwind — potential exit buyers just got much larger.",
+      "open_questions": "Is your infrastructure allocation ahead of or behind the institutional curve? What's your target allocation and current weight?",
+      "decision_action": "Review infrastructure allocation relative to endowment benchmarks. If underweight, identify 2–3 manager relationships for due diligence in Q3."
+    }
+  },
+  {
+    "id": "finance-3",
+    "headline": "JPMorgan raises full-year earnings guidance as investment banking revenue surges 34%",
+    "estimated_read_time_minutes": 3,
+    "source": "Financial Times",
+    "universal_mode": {
+      "gist": "JPMorgan raised 2025 EPS guidance by 8% after Q1 investment banking revenue came in at $9.2B — 34% above analyst estimates.",
+      "ripple_effect": "The beat signals that the M&A recovery is durable; advisory pipelines across Goldman, Morgan Stanley, and Lazard are reportedly at multi-year highs.",
+      "personal_impact": "For founders and executives planning liquidity events, the M&A window that appeared in Q4 2024 is now confirmed open and widening.",
+      "key_metric": "IB revenue of $9.2B — highest single quarter since Q2 2021."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Market Move",
+      "bullet_1_text": "Rate clarity, equity market highs, and pent-up sponsor demand are converging — the classic conditions for an M&A supercycle.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "JPMorgan's advisory and debt underwriting divisions are the primary beneficiaries; equity capital markets revenue also beat, suggesting IPO activity is returning.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "The political risk variable is non-trivial — antitrust scrutiny under the current administration has blocked several large deals. The pipeline is strong; conversion to closed deals may disappoint."
+    },
+    "executive_mode": {
+      "the_intel": "The M&A market is open. JPMorgan's results are a leading indicator for deal activity — investment banks make money when transactions close.",
+      "why_flagged": "Any portfolio company considering a sale process, merger, or capital raise should treat H2 2025 as a favorable execution window.",
+      "open_questions": "Has your investment bank updated their acquisition comps for your category in the last 60 days? What has cleared regulatory review vs. what's still stuck?",
+      "decision_action": "Initiate preliminary M&A or fundraising conversations for any asset you were planning to move in the next 18 months. Market windows close unexpectedly."
+    }
+  },
+  {
+    "id": "finance-4",
+    "headline": "Hedge funds increase short positions on US commercial real estate as office vacancy hits 23%",
+    "estimated_read_time_minutes": 4,
+    "source": "Bloomberg",
+    "universal_mode": {
+      "gist": "MSCI data shows 23.1% average office vacancy in US tier-1 markets; hedge funds have increased CMBS short positions by $12B over 90 days.",
+      "ripple_effect": "Regional bank loan books with heavy CRE exposure are under renewed scrutiny; three mid-size banks disclosed elevated CRE provisions in Q1 earnings.",
+      "personal_impact": "Any real estate exposure in a personal or institutional portfolio warrants a granular review — sector and geography differentiate dramatically.",
+      "key_metric": "$12B in new CMBS short positions opened in Q1 — a 3-year high."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Market Move",
+      "bullet_1_text": "The short thesis is structurally sound: office leases signed in 2018–2021 are rolling off at 40–60% of prior rents, and lenders are being forced to extend-and-pretend as alternatives narrow.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Regional banks hold approximately $900B in CRE loans; a 10% default rate — historically modest in a downturn — would require $90B in provisions, likely forcing equity raises.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Industrial and multifamily real estate remain structurally undersupplied; the CRE crisis is specifically an office story, and investors conflating the two are creating alpha opportunities."
+    },
+    "executive_mode": {
+      "the_intel": "Institutional money is actively shorting commercial real estate debt. This is not a warning signal — it's a market-clearing mechanism that signals where distress is coming.",
+      "why_flagged": "If you or your LPs have CRE exposure through commingled vehicles or direct ownership, the next 12 months will test valuations significantly.",
+      "open_questions": "What is your exact CRE exposure by property type and geography? Which positions mature in the next 24 months?",
+      "decision_action": "Request a detailed CRE exposure analysis from your wealth manager or family office. Separate office from industrial/multifamily. Stress-test office positions for 25% and 40% value declines."
+    }
+  },
+  {
+    "id": "finance-5",
+    "headline": "Stripe achieves profitability milestone, files confidential IPO registration with SEC",
+    "estimated_read_time_minutes": 3,
+    "source": "Reuters",
+    "universal_mode": {
+      "gist": "Stripe filed a confidential S-1 with the SEC this week after reporting its first full year of GAAP profitability — net income of approximately $200M on $16B revenue.",
+      "ripple_effect": "The filing reactivates the fintech IPO pipeline; Klarna, Chime, and Plaid are all watching Stripe's reception as a leading indicator.",
+      "personal_impact": "Stripe early employees and investors holding options or equity face a liquidity event likely in Q4 2025 or H1 2026.",
+      "key_metric": "$16B revenue, ~$200M net income, implied ~$65B valuation at current secondary market pricing."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Market Move",
+      "bullet_1_text": "Stripe's path to profitability came through aggressive cost discipline (25% headcount reduction in 2023–24) and a shift toward higher-margin enterprise and financial infrastructure revenue.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "At a $65B valuation, Stripe prices at ~4× revenue — a substantial discount to its 2021 peak of $95B, but more defensible given current public market multiples for SaaS.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Stripe faces commoditization risk at the payment layer: both Adyen and emerging players have closed the feature gap, and enterprise switching costs may be lower than assumed."
+    },
+    "executive_mode": {
+      "the_intel": "Stripe has filed to go public. This is the most consequential fintech IPO of the decade — its pricing sets the benchmark for the entire private tech ecosystem.",
+      "why_flagged": "If you have Stripe exposure (direct, fund, or through portfolio companies depending on Stripe), you need a view on valuation and post-IPO price dynamics.",
+      "open_questions": "At what price does Stripe become a buy vs. a sell in the aftermarket? What does a $65B valuation imply about your other fintech positions?",
+      "decision_action": "Develop a Stripe IPO investment thesis now. Determine whether you participate in the offering, buy in the aftermarket, or take no position. Decide before the roadshow."
+    }
+  },
+  {
+    "id": "finance-6",
+    "headline": "Warren Buffett's Berkshire Hathaway accumulates $180B cash position, largest in company history",
+    "estimated_read_time_minutes": 3,
+    "source": "CNBC",
+    "universal_mode": {
+      "gist": "Berkshire's Q1 filing revealed $187B in cash and equivalents — up from $168B in Q4 — as Buffett continued selling equities and finding no large acquisition targets.",
+      "ripple_effect": "Buffett's cash hoard is widely read as a market signal; historically, Berkshire's peak cash positions have preceded market corrections by 12–24 months.",
+      "personal_impact": "For long-term allocators, the signal reinforces the case for maintaining dry powder and avoiding FOMO-driven deployment at current valuations.",
+      "key_metric": "$187B — Berkshire's largest cash position ever, representing ~30% of total assets."
+    },
+    "topic_specific_mode": {
+      "bullet_1_header": "The Market Move",
+      "bullet_1_text": "Buffett has been a net seller of equities for seven consecutive quarters; his sales of Bank of America and Apple positions have been interpreted as macro caution, not company-specific.",
+      "bullet_2_header": "Capital at Stake",
+      "bullet_2_text": "Treasury bills currently yield 5.2% — Berkshire earns $9–10B annually on its cash position simply by waiting. The hurdle rate for acquisitions has never been higher.",
+      "bullet_3_header": "Counter-Position",
+      "bullet_3_text": "Buffett's cash build could reflect idiosyncratic factors — estate planning, Berkshire's scale problem (deploying $100B+ is genuinely hard) — rather than a macro call."
+    },
+    "executive_mode": {
+      "the_intel": "Berkshire holds $187B in cash. Buffett is not finding anything worth buying at current prices. That's a data point worth weighing.",
+      "why_flagged": "The signal matters for allocators deciding whether to deploy fresh capital into public equities now vs. waiting for a correction.",
+      "open_questions": "What is your current cash allocation vs. your strategic target? Are you over- or under-invested relative to your long-term plan?",
+      "decision_action": "Review portfolio cash position. If below target, identify 2–3 specific catalysts that would trigger deployment rather than deploying on a schedule. Be patient."
+    }
+  }
+]
