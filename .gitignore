@@ -29,6 +29,10 @@ Breeves/Secrets.plist
 supabase/.branches
 supabase/.temp
 
+# Smoke-test outputs from prompt_smoke.ts — these are live API responses,
+# not source. Regenerate by running the smoke script with ANTHROPIC_API_KEY.
+supabase/functions/_shared/canned/_out/
+
 # Bundle (handoff is a one-time export, keep out of repo)
 Breeves\ iOS-handoff.zip
 handoff/
