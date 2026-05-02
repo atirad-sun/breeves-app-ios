@@ -8,6 +8,13 @@ public protocol ProfileService: AnyObject, Sendable {
 
     func fetchTopics(for user: BreevesUser) async throws -> [UserTopic]
     func saveTopics(_ topics: [UserTopic], for user: BreevesUser) async throws
+
+    /// Validates and canonicalizes a free-typed topic string via the
+    /// validate_topic Edge Function (Haiku). Returns ok=false with a
+    /// user-facing `reason` if the topic is gibberish, off-policy, or
+    /// otherwise rejected. Implementations should fail open on transient
+    /// errors so the user isn't blocked by a backend hiccup.
+    func validateTopic(_ raw: String) async throws -> TopicValidation
 }
 
 public final class SupabaseProfileService: ProfileService, @unchecked Sendable {
@@ -117,5 +124,17 @@ public final class SupabaseProfileService: ProfileService, @unchecked Sendable {
         try await client.from("user_topics").delete().eq("user_id", value: user.id).execute()
         let rows = topics.map { Row(userId: user.id, slot: $0.slot, topic: $0.name, description: $0.descriptionText) }
         try await client.from("user_topics").insert(rows).execute()
+    }
+
+    public func validateTopic(_ raw: String) async throws -> TopicValidation {
+        struct Body: Encodable { let topic: String }
+        // supabase-swift's functions.invoke handles auth header injection
+        // (current session JWT) automatically.
+        let resp: TopicValidation = try await client.functions
+            .invoke(
+                "validate_topic",
+                options: FunctionInvokeOptions(method: .post, body: Body(topic: raw))
+            )
+        return resp
     }
 }

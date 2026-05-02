@@ -122,6 +122,33 @@ public final class MockProfileService: ProfileService, @unchecked Sendable {
     public func saveTopics(_ topics: [UserTopic], for user: BreevesUser) async throws {
         await backend.setTopics(topics)
     }
+    public func validateTopic(_ raw: String) async throws -> TopicValidation {
+        // Lightweight local heuristic for the mock path. Real validation
+        // happens server-side via Haiku — this just keeps the dev loop
+        // functional without a Supabase project.
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty {
+            return TopicValidation(ok: false, canonical: nil, description: nil, reason: "Topic cannot be empty.")
+        }
+        if trimmed.count < 2 {
+            return TopicValidation(ok: false, canonical: nil, description: nil, reason: "Topic is too short.")
+        }
+        // Reject obvious gibberish (no vowels, all same char). Coarse but
+        // good enough for local dev.
+        let lower = trimmed.lowercased()
+        let vowels = lower.filter { "aeiou".contains($0) }
+        let unique = Set(lower)
+        if vowels.isEmpty || unique.count == 1 {
+            return TopicValidation(ok: false, canonical: nil, description: nil,
+                reason: "Doesn't look like a real topic — try a company, person, or subject.")
+        }
+        return TopicValidation(
+            ok: true,
+            canonical: trimmed.capitalized,
+            description: "Custom topic — news will be curated daily.",
+            reason: nil
+        )
+    }
 }
 
 // MARK: - BriefingService

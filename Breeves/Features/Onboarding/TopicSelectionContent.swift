@@ -1,6 +1,7 @@
 import SwiftUI
 import DesignSystem
 import Models
+import Networking
 
 struct TopicSuggestion: Identifiable, Hashable {
     let name: String
@@ -39,6 +40,10 @@ struct TopicSelectionContent: View {
     @Binding var selected: [TopicSuggestion]
     @Binding var query: String
     @FocusState.Binding var inputFocused: Bool
+    @Environment(AppModel.self) private var app
+
+    @State private var isValidating: Bool = false
+    @State private var validationError: String?
 
     private var filtered: [TopicSuggestion] {
         let q = query.trimmingCharacters(in: .whitespaces)
@@ -52,6 +57,9 @@ struct TopicSelectionContent: View {
         VStack(alignment: .leading, spacing: 0) {
             searchInput
                 .padding(.bottom, BreevesSpace.s3)
+                .onChange(of: query) { _, _ in
+                    if validationError != nil { validationError = nil }
+                }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -84,12 +92,18 @@ struct TopicSelectionContent: View {
                            !filtered.contains(where: { $0.name.lowercased() == trimmed.lowercased() }) &&
                            !selected.contains(where: { $0.name.lowercased() == trimmed.lowercased() }) {
                             Button {
-                                addCustom()
+                                Task { await addCustom() }
                             } label: {
                                 HStack(spacing: BreevesSpace.s3) {
-                                    Image(systemName: "plus.circle.fill")
-                                        .foregroundStyle(BreevesColor.accentPrimary)
-                                    Text("Add \"\(trimmed)\" as custom topic")
+                                    if isValidating {
+                                        ProgressView()
+                                            .controlSize(.small)
+                                            .tint(BreevesColor.accentPrimary)
+                                    } else {
+                                        Image(systemName: "plus.circle.fill")
+                                            .foregroundStyle(BreevesColor.accentPrimary)
+                                    }
+                                    Text(isValidating ? "Validating \"\(trimmed)\"…" : "Add \"\(trimmed)\" as custom topic")
                                         .breevesBodyM()
                                         .foregroundStyle(BreevesColor.accentPrimary)
                                     Spacer()
@@ -97,6 +111,14 @@ struct TopicSelectionContent: View {
                                 .padding(.vertical, BreevesSpace.s3)
                             }
                             .buttonStyle(.plain)
+                            .disabled(isValidating)
+
+                            if let err = validationError {
+                                Text(err)
+                                    .breevesCaption()
+                                    .foregroundStyle(BreevesColor.stateDanger)
+                                    .padding(.bottom, BreevesSpace.s2)
+                            }
                         }
                     }
 
@@ -208,9 +230,36 @@ struct TopicSelectionContent: View {
         inputFocused = false
     }
 
-    private func addCustom() {
+    private func addCustom() async {
         let name = query.trimmingCharacters(in: .whitespaces)
-        guard !name.isEmpty else { return }
-        addTopic(TopicSuggestion(name: name, descriptionText: "Custom topic — news will be curated daily."))
+        guard !name.isEmpty, !isValidating else { return }
+        validationError = nil
+        isValidating = true
+        defer { isValidating = false }
+
+        let result: TopicValidation
+        do {
+            result = try await app.backend.profiles.validateTopic(name)
+        } catch {
+            // Network/transport failure → fail open with the raw input.
+            // The pipeline tolerates any string; rejecting on a transient
+            // backend hiccup would be worse UX.
+            addTopic(TopicSuggestion(name: name, descriptionText: "Custom topic — news will be curated daily."))
+            return
+        }
+
+        if !result.ok {
+            validationError = result.reason ?? "That topic isn't supported. Try something else."
+            return
+        }
+
+        let canonical = result.canonical?.trimmingCharacters(in: .whitespaces) ?? name
+        let description = result.description ?? "Custom topic — news will be curated daily."
+        // Don't add a duplicate of an already-selected canonical name.
+        if selected.contains(where: { $0.name.lowercased() == canonical.lowercased() }) {
+            validationError = "\(canonical) is already in your topics."
+            return
+        }
+        addTopic(TopicSuggestion(name: canonical, descriptionText: description))
     }
 }

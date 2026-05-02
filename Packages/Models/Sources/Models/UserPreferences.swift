@@ -55,3 +55,20 @@ public struct UserTopic: Codable, Hashable, Sendable, Identifiable {
         self.descriptionText = descriptionText
     }
 }
+
+/// Result of running a free-typed topic string through the validate_topic
+/// Edge Function. `ok=false` carries a user-facing reason; `ok=true`
+/// carries the canonical form + a one-line description for the chip UI.
+public struct TopicValidation: Codable, Hashable, Sendable {
+    public let ok: Bool
+    public let canonical: String?
+    public let description: String?
+    public let reason: String?
+
+    public init(ok: Bool, canonical: String?, description: String?, reason: String?) {
+        self.ok = ok
+        self.canonical = canonical
+        self.description = description
+        self.reason = reason
+    }
+}
