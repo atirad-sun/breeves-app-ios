@@ -1,6 +1,16 @@
-// Breeves — generate_daily_briefing Edge Function (v1, stubbed).
-// Reads the caller's 3 topics, returns a schema-valid briefing built from
-// fixture JSON keyed by topic name (case-insensitive). No LLM call in v1.
+// Breeves — generate_daily_briefing Edge Function (v2, live).
+//
+// Reads the caller's 3 topics, runs the live pipeline (news fetch →
+// extract → Claude summarization with prompt caching) and upserts the
+// result into daily_briefings. If ANTHROPIC_API_KEY is unset OR a topic's
+// pipeline returns zero articles (no candidates, all summarizations
+// failed), falls back to the canned fixture for that topic so the client
+// still receives a valid briefing.
+//
+// Fallback rationale: this function is user-triggered ("Refresh now").
+// Returning a 500 because we got rate-limited or HN's API blipped is a
+// worse UX than serving last-good fixture content. The cron in Step 5
+// will be stricter — it logs failures rather than masking them.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
 // deno-lint-ignore-file no-explicit-any
@@ -9,6 +19,8 @@ import aiFixture from './fixtures/ai.json' with { type: 'json' }
 import financeFixture from './fixtures/finance.json' with { type: 'json' }
 import geopoliticsFixture from './fixtures/geopolitics.json' with { type: 'json' }
 import defaultFixture from './fixtures/default.json' with { type: 'json' }
+
+import { runTopicPipeline } from '../_shared/pipeline.ts'
 
 const FIXTURES: Record<string, any[]> = {
   ai: aiFixture,
@@ -19,7 +31,6 @@ const FIXTURES: Record<string, any[]> = {
 function fixtureFor(topicName: string): any[] {
   const key = topicName.trim().toLowerCase()
   if (FIXTURES[key]) return FIXTURES[key]
-  // Fallback: use the default fixture but rebrand article ids/headlines per topic
   return (defaultFixture as any[]).map((a, i) => ({
     ...a,
     id: `${key.replace(/\s+/g, '-')}-${i + 1}`,
@@ -46,7 +57,6 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     )
 
-    // Identify the caller from their JWT
     const userClient = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_ANON_KEY')!,
@@ -55,7 +65,6 @@ Deno.serve(async (req) => {
     const { data: { user }, error: userErr } = await userClient.auth.getUser()
     if (userErr || !user) return new Response(JSON.stringify({ error: 'invalid user' }), { status: 401 })
 
-    // Load topics
     const { data: topics, error: topicsErr } = await supabase
       .from('user_topics')
       .select('topic, slot')
@@ -68,13 +77,40 @@ Deno.serve(async (req) => {
     }
 
     const today = new Date().toISOString().slice(0, 10)
-    const payload = {
-      date: today,
-      topics: topics.map(t => ({
-        topic: t.topic,
-        articles: fixtureFor(t.topic),
-      })),
-    }
+    const apiKey = Deno.env.get('ANTHROPIC_API_KEY')
+    const live = !!apiKey
+
+    let totalArticles = 0
+    let totalDropped = 0
+    let totalCacheWrite = 0
+    let totalCacheRead = 0
+    let liveTopics = 0
+
+    const briefingTopics = await Promise.all(
+      topics.map(async (t) => {
+        if (!live) {
+          return { topic: t.topic, articles: fixtureFor(t.topic) }
+        }
+        try {
+          const result = await runTopicPipeline(t.topic, apiKey!, today)
+          if (result.articles.length === 0) {
+            console.warn(`generate_daily_briefing: empty pipeline for "${t.topic}", using fixture`)
+            return { topic: t.topic, articles: fixtureFor(t.topic) }
+          }
+          liveTopics++
+          totalArticles += result.articles.length
+          totalDropped += result.droppedCount
+          totalCacheWrite += result.usage.cache_creation_tokens
+          totalCacheRead += result.usage.cache_read_tokens
+          return { topic: t.topic, articles: result.articles }
+        } catch (err) {
+          console.error(`generate_daily_briefing: pipeline failed for "${t.topic}": ${(err as Error).message}`)
+          return { topic: t.topic, articles: fixtureFor(t.topic) }
+        }
+      }),
+    )
+
+    const payload = { date: today, topics: briefingTopics }
 
     const { error: upsertErr } = await supabase
       .from('daily_briefings')
@@ -86,9 +122,19 @@ Deno.serve(async (req) => {
       })
     if (upsertErr) throw upsertErr
 
-    return new Response(JSON.stringify({ ok: true, date: today, topic_count: topics.length }), {
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-    })
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        date: today,
+        topic_count: topics.length,
+        live_topics: liveTopics,
+        live_articles: totalArticles,
+        dropped: totalDropped,
+        cache_read: totalCacheRead,
+        cache_write: totalCacheWrite,
+      }),
+      { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } },
+    )
   } catch (err) {
     return new Response(JSON.stringify({ error: String(err) }), {
       status: 500,
