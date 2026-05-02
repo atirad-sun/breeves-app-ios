@@ -71,7 +71,11 @@ struct TopicSelectionView: View {
         do {
             try await app.saveOnboardingTopics(topics)
         } catch {
-            errorText = "Couldn't save topics. Try again."
+            // Surface the underlying message — most common cause is an
+            // unconfirmed-email account hitting RLS, which produces a
+            // descriptive Supabase error worth showing instead of hiding.
+            let msg = (error as NSError).localizedDescription
+            errorText = msg.isEmpty ? "Couldn't save topics. Try again." : "Couldn't save: \(msg)"
         }
     }
 }

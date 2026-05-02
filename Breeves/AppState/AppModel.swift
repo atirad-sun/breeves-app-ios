@@ -12,6 +12,10 @@ public final class AppModel {
         case auth
         case onboardingTopics
         case onboardingPreferences
+        /// Shown while the first briefing is being generated (60-100s on
+        /// cold cache). Bridges onboarding → dashboard with rotating
+        /// status copy so the user knows the app isn't frozen.
+        case preparingBriefing
         case dashboard
     }
 
@@ -34,7 +38,15 @@ public final class AppModel {
         self.cache = cache
     }
 
-    public var totalRead: Int { readArticleIds.count }
+    /// Count of today's articles the user has actually read. Filters
+    /// readArticleIds against today's briefing so stale reads from
+    /// articles that no longer exist (topic switch within the same day,
+    /// briefing regeneration) don't push the counter past totalArticles.
+    public var totalRead: Int {
+        guard let briefing else { return 0 }
+        let todaysIds = Set(briefing.topics.flatMap { $0.articles.map(\.id) })
+        return readArticleIds.intersection(todaysIds).count
+    }
     public var totalArticles: Int { briefing?.totalArticles ?? 18 }
 
     // MARK: - Boot
@@ -56,29 +68,6 @@ public final class AppModel {
         // jump straight to the dashboard for screenshot capture.
         let args = ProcessInfo.processInfo.arguments
         let demoMode = args.contains("-BREEVES_DEMO") && backend.mode == .mock
-
-        // Live backend debug bypass: simulator's Apple/Google sign-in flows
-        // are broken on iOS 26 (passcode pref pane regression + missing
-        // GOOGLE_CLIENT_ID), so this lets us land a real Supabase JWT for
-        // backend testing. Reads -BREEVES_DEBUG_EMAIL and
-        // -BREEVES_DEBUG_PASSWORD from launch args; never bake credentials
-        // into the binary.
-        if backend.mode == .live, args.contains("-BREEVES_LIVE_DEBUG_USER") {
-            if let email = launchArg(args, "-BREEVES_DEBUG_EMAIL"),
-               let password = launchArg(args, "-BREEVES_DEBUG_PASSWORD") {
-                do {
-                    let u = try await backend.auth.signInWithEmailPassword(email: email, password: password)
-                    self.user = u
-                    await loadAfterAuth()
-                    return
-                } catch {
-                    print("[BREEVES_LIVE_DEBUG_USER] sign-in failed: \(error)")
-                    // Fall through to normal auth screen.
-                }
-            } else {
-                print("[BREEVES_LIVE_DEBUG_USER] missing -BREEVES_DEBUG_EMAIL or -BREEVES_DEBUG_PASSWORD")
-            }
-        }
 
         // Direct routes for screenshot capture
         if backend.mode == .mock && args.contains("-BREEVES_TOPICS") {
@@ -164,6 +153,20 @@ public final class AppModel {
 
         if topics.count == 3 {
             globalLens = preferences.defaultLens
+            // If we have a locally-cached briefing we can render it
+            // immediately on the dashboard while the background refresh
+            // runs. Without a cache, we must route to the preparing
+            // screen so the user isn't staring at the splash for 60-100s
+            // while the live pipeline generates today's first briefing.
+            let hasCached = (try? cache.loadToday()) != nil
+            if !hasCached {
+                route = .preparingBriefing
+                // Sleep 50ms so SwiftUI paints the preparing screen
+                // before we begin the long Edge-Function await. Plain
+                // Task.yield() isn't enough — SwiftUI batches @Observable
+                // mutations and renders on display refresh, not on yield.
+                try? await Task.sleep(for: .milliseconds(50))
+            }
             await loadBriefing()
             route = .dashboard
         } else {
@@ -186,6 +189,12 @@ public final class AppModel {
         self.preferences = prefs
         try? cache.savePreferences(prefs)
         globalLens = prefs.defaultLens
+        // Route to the preparing screen before kicking off the briefing
+        // generation — gives the user immediate feedback during the
+        // 60-100s cold-cache pipeline run. Sleep gives SwiftUI a real
+        // frame to paint before the long await begins.
+        route = .preparingBriefing
+        try? await Task.sleep(for: .milliseconds(50))
         await loadBriefing()
         route = .dashboard
     }
@@ -218,7 +227,11 @@ public final class AppModel {
         guard !readArticleIds.contains(articleId) else { return }
         readArticleIds.insert(articleId)
         try? cache.markRead(articleId: articleId)
-        if readArticleIds.count == totalArticles {
+        // Use the date-and-briefing-scoped totalRead so we only fire
+        // completion when every article in TODAY'S briefing is read,
+        // not when the cache has accumulated stale reads from earlier
+        // briefing snapshots.
+        if totalRead >= totalArticles {
             // Slight delay so the user sees the headline fade before the
             // dashboard hands off to the completion screen.
             Task { @MainActor in
@@ -253,15 +266,4 @@ public final class AppModel {
         isCompletionShown = false
         route = .auth
     }
-}
-
-/// Reads `-Key Value` pairs from process launch arguments. Xcode passes
-/// scheme-level arguments as `["-MyKey", "myvalue"]` so the value is
-/// always the next array element after the key. Returns nil if missing.
-@MainActor
-private func launchArg(_ args: [String], _ key: String) -> String? {
-    guard let i = args.firstIndex(of: key), i + 1 < args.count else { return nil }
-    let v = args[i + 1]
-    if v.isEmpty || v.hasPrefix("-") { return nil }
-    return v
 }

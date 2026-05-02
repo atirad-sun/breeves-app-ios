@@ -6,10 +6,14 @@ public protocol AuthService: AnyObject, Sendable {
     var currentUser: BreevesUser? { get async }
     func signInWithApple(authorization: ASAuthorization, rawNonce: String) async throws -> BreevesUser
     func signInWithGoogle(idToken: String, accessToken: String?) async throws -> BreevesUser
-    /// Email/password sign-in. Used by the -BREEVES_LIVE_DEBUG_USER launch
-    /// argument to bypass the simulator's broken Apple/Google sign-in flow.
-    /// Not surfaced anywhere in the production UI.
+    /// Email/password sign-in. Surfaced in the UI behind the
+    /// "Continue with Email" entry point; also the only auth path that
+    /// works on a free Apple personal team (no Apple-Sign-In entitlement).
     func signInWithEmailPassword(email: String, password: String) async throws -> BreevesUser
+    /// Create a new account with email/password. Returns the signed-in
+    /// user on success — Supabase auto-signs in after sign-up when email
+    /// confirmation is disabled (the default for the dev project).
+    func signUpWithEmailPassword(email: String, password: String) async throws -> BreevesUser
     func signOut() async throws
 }
 
@@ -65,6 +69,12 @@ public final class SupabaseAuthService: AuthService, @unchecked Sendable {
     public func signInWithEmailPassword(email: String, password: String) async throws -> BreevesUser {
         let session = try await client.auth.signIn(email: email, password: password)
         let u = session.user
+        return BreevesUser(id: u.id.uuidString, email: u.email, provider: "email")
+    }
+
+    public func signUpWithEmailPassword(email: String, password: String) async throws -> BreevesUser {
+        let response = try await client.auth.signUp(email: email, password: password)
+        let u = response.user
         return BreevesUser(id: u.id.uuidString, email: u.email, provider: "email")
     }
 

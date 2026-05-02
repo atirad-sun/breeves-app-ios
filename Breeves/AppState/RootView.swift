@@ -31,6 +31,8 @@ struct RootView: View {
             TopicSelectionView()
         case .onboardingPreferences:
             PreferencesView()
+        case .preparingBriefing:
+            PreparingBriefingView()
         case .dashboard:
             DashboardView()
         }

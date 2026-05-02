@@ -8,6 +8,7 @@ struct AuthView: View {
     @Environment(AppModel.self) private var app
     @State private var rawNonce: String = ""
     @State private var errorMessage: String?
+    @State private var showEmailSheet: Bool = false
 
     /// Mock backend always shows Google for the demo. Live backend hides
     /// it when GOOGLE_CLIENT_ID is missing — invoking GID without a
@@ -86,6 +87,30 @@ struct AuthView: View {
                     .accessibilityLabel("Continue with Google")
                 }
 
+                Button {
+                    showEmailSheet = true
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "envelope")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(BreevesColor.textPrimary)
+                        Text("Continue with Email")
+                            .breevesBodyL()
+                            .fontWeight(.semibold)
+                            .foregroundStyle(BreevesColor.textPrimary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 52)
+                    .background(BreevesColor.bgElevated1)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(BreevesColor.hairlineStandard, lineWidth: 1)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Continue with Email")
+
                 if let error = errorMessage {
                     Text(error)
                         .breevesCaption()
@@ -102,6 +127,13 @@ struct AuthView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top, BreevesSpace.s7)
         .background(BreevesColor.bgCanvas.ignoresSafeArea())
+        .sheet(isPresented: $showEmailSheet) {
+            EmailAuthSheet { user in
+                await app.handleSignedIn(user)
+            }
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
+        }
     }
 
     private var tosLine: some View {

@@ -14,6 +14,7 @@
 		3DF94F91F6B1CDC7ACF0EE6D /* TopicSelectionContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251C30893A5647F8AA06E8D8 /* TopicSelectionContent.swift */; };
 		53072291C3E36A6994ABAB0B /* Persistence in Frameworks */ = {isa = PBXBuildFile; productRef = 7733701345BE08661FB64477 /* Persistence */; };
 		5F39BB94B6AD3DEEF0A563A7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71D2500FA65DA0EBE9B15DD /* SplashView.swift */; };
+		60A367DED61FEE8315AA8339 /* EmailAuthSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7906A908A67C09551BC046F4 /* EmailAuthSheet.swift */; };
 		612BC42E956BBFB5482457D6 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AF947572EFCDD8EA816E3E /* PreferencesView.swift */; };
 		684EC76E8BC6736B3ECF96F0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6FE2649EEEC2B7361D8F22 /* SettingsView.swift */; };
 		6C9A7D7157D829A7852EBFFF /* TopicSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5969A8D8AB878D06D6714B97 /* TopicSelectionView.swift */; };
@@ -24,6 +25,7 @@
 		C085EADDD54931B411FF481C /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 802FC7F2D30F986D71486741 /* Secrets.plist */; };
 		C185B4BD4A15D46BE788626B /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAF240ED81D4148C33D08C4 /* AuthView.swift */; };
 		C53C89B4358292B9FFE2EE50 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = FD974902E829165A98872A67 /* DesignSystem */; };
+		CD6E8689473EF96CB0F51E9F /* PreparingBriefingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954E90F7514D71FB27A9258B /* PreparingBriefingView.swift */; };
 		D7101F10406341784EC9E224 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F20F0B65EA7685811FE51C2 /* RootView.swift */; };
 		D90F7E8F20D1761877991F7F /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C78F5966A7464E758A87241 /* AppModel.swift */; };
 		DF46CFF4CF362D59DD6692A5 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBDCCF5E030978926B3BA5B /* DashboardView.swift */; };
@@ -47,7 +49,9 @@
 		5FC94D626F8EEE84B7F635C8 /* ManageTopicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageTopicsView.swift; sourceTree = "<group>"; };
 		64D9C7402BD61A4A65DF38BC /* Breeves.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Breeves.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C78F5966A7464E758A87241 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		7906A908A67C09551BC046F4 /* EmailAuthSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthSheet.swift; sourceTree = "<group>"; };
 		802FC7F2D30F986D71486741 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Secrets.plist; sourceTree = "<group>"; };
+		954E90F7514D71FB27A9258B /* PreparingBriefingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreparingBriefingView.swift; sourceTree = "<group>"; };
 		96780054C227C43785E65D46 /* ArticleCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCardView.swift; sourceTree = "<group>"; };
 		AAA55B983B8F0CF1AA69676F /* BreevesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreevesApp.swift; sourceTree = "<group>"; };
 		E335285CC4C7C920E29DEF0C /* DeliveryTimeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTimeSheet.swift; sourceTree = "<group>"; };
@@ -83,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				47AF947572EFCDD8EA816E3E /* PreferencesView.swift */,
+				954E90F7514D71FB27A9258B /* PreparingBriefingView.swift */,
 				251C30893A5647F8AA06E8D8 /* TopicSelectionContent.swift */,
 				5969A8D8AB878D06D6714B97 /* TopicSelectionView.swift */,
 			);
@@ -153,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				5BAF240ED81D4148C33D08C4 /* AuthView.swift */,
+				7906A908A67C09551BC046F4 /* EmailAuthSheet.swift */,
 				28FAAC741BFA9CA0DBE18AD0 /* NonceGenerator.swift */,
 				F71D2500FA65DA0EBE9B15DD /* SplashView.swift */,
 			);
@@ -270,9 +276,11 @@
 				35A0FCF0744C032377451BAF /* CompletionView.swift in Sources */,
 				DF46CFF4CF362D59DD6692A5 /* DashboardView.swift in Sources */,
 				2D19AABF351DFFC846A3DC5B /* DeliveryTimeSheet.swift in Sources */,
+				60A367DED61FEE8315AA8339 /* EmailAuthSheet.swift in Sources */,
 				8F04D1D2F43BAE1BDF9DC9EA /* ManageTopicsView.swift in Sources */,
 				73F58427C503761C655DEE91 /* NonceGenerator.swift in Sources */,
 				612BC42E956BBFB5482457D6 /* PreferencesView.swift in Sources */,
+				CD6E8689473EF96CB0F51E9F /* PreparingBriefingView.swift in Sources */,
 				D7101F10406341784EC9E224 /* RootView.swift in Sources */,
 				684EC76E8BC6736B3ECF96F0 /* SettingsView.swift in Sources */,
 				5F39BB94B6AD3DEEF0A563A7 /* SplashView.swift in Sources */,
