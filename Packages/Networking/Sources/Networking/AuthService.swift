@@ -6,6 +6,10 @@ public protocol AuthService: AnyObject, Sendable {
     var currentUser: BreevesUser? { get async }
     func signInWithApple(authorization: ASAuthorization, rawNonce: String) async throws -> BreevesUser
     func signInWithGoogle(idToken: String, accessToken: String?) async throws -> BreevesUser
+    /// Email/password sign-in. Used by the -BREEVES_LIVE_DEBUG_USER launch
+    /// argument to bypass the simulator's broken Apple/Google sign-in flow.
+    /// Not surfaced anywhere in the production UI.
+    func signInWithEmailPassword(email: String, password: String) async throws -> BreevesUser
     func signOut() async throws
 }
 
@@ -56,6 +60,12 @@ public final class SupabaseAuthService: AuthService, @unchecked Sendable {
         )
         let u = session.user
         return BreevesUser(id: u.id.uuidString, email: u.email, provider: "google")
+    }
+
+    public func signInWithEmailPassword(email: String, password: String) async throws -> BreevesUser {
+        let session = try await client.auth.signIn(email: email, password: password)
+        let u = session.user
+        return BreevesUser(id: u.id.uuidString, email: u.email, provider: "email")
     }
 
     public func signOut() async throws {

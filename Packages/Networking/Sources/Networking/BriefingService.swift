@@ -17,7 +17,33 @@ public final class SupabaseBriefingService: BriefingService, @unchecked Sendable
     public func fetchToday(for user: BreevesUser, topics: [UserTopic]) async throws -> DailyBriefing {
         let today = ISO8601DateFormatter.dateOnly.string(from: Date())
 
-        // 1. Try to read today's briefing
+        do {
+            return try await readBriefing(userID: user.id, today: today)
+        } catch {
+            // Try generating, then re-read.
+            _ = try await client.functions.invoke(
+                "generate_daily_briefing",
+                options: FunctionInvokeOptions(method: .post)
+            ) as Void
+            return try await readBriefing(userID: user.id, today: today)
+        }
+    }
+
+    /// Fetch the briefing row and decode through `JSONDecoder.briefing` so
+    /// snake_case keys (estimated_read_time_minutes, universal_mode, etc.)
+    /// map to camelCase Swift properties. PostgREST's default decoder
+    /// doesn't apply convertFromSnakeCase, which silently fails the entire
+    /// payload decode.
+    private func readBriefing(userID: String, today: String) async throws -> DailyBriefing {
+        // Fetch as raw Data so we can apply our own decoder.
+        let response = try await client
+            .from("daily_briefings")
+            .select("payload")
+            .eq("user_id", value: userID)
+            .eq("briefing_date", value: today)
+            .single()
+            .execute()
+
         struct Row: Decodable {
             let payload: PayloadDTO
         }
@@ -26,37 +52,9 @@ public final class SupabaseBriefingService: BriefingService, @unchecked Sendable
             let topics: [TopicBriefing]
         }
 
-        do {
-            let row: Row = try await client
-                .from("daily_briefings")
-                .select("payload")
-                .eq("user_id", value: user.id)
-                .eq("briefing_date", value: today)
-                .single()
-                .execute()
-                .value
-
-            let date = ISO8601DateFormatter.dateOnly.date(from: row.payload.date) ?? Date()
-            return DailyBriefing(date: date, topics: row.payload.topics)
-        } catch {
-            // 2. Trigger generation, then re-read.
-            _ = try await client.functions.invoke(
-                "generate_daily_briefing",
-                options: FunctionInvokeOptions(method: .post)
-            ) as Void
-
-            let row: Row = try await client
-                .from("daily_briefings")
-                .select("payload")
-                .eq("user_id", value: user.id)
-                .eq("briefing_date", value: today)
-                .single()
-                .execute()
-                .value
-
-            let date = ISO8601DateFormatter.dateOnly.date(from: row.payload.date) ?? Date()
-            return DailyBriefing(date: date, topics: row.payload.topics)
-        }
+        let row = try JSONDecoder.briefing.decode(Row.self, from: response.data)
+        let date = ISO8601DateFormatter.dateOnly.date(from: row.payload.date) ?? Date()
+        return DailyBriefing(date: date, topics: row.payload.topics)
     }
 }
 

@@ -21,6 +21,7 @@
 		8B6895566802B9A0CB443967 /* ArticleCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96780054C227C43785E65D46 /* ArticleCardView.swift */; };
 		8F04D1D2F43BAE1BDF9DC9EA /* ManageTopicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC94D626F8EEE84B7F635C8 /* ManageTopicsView.swift */; };
 		AB1251861C99E2F3D21B50BB /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 69BA1B3AA3CD9822BED80755 /* Networking */; };
+		C085EADDD54931B411FF481C /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 802FC7F2D30F986D71486741 /* Secrets.plist */; };
 		C185B4BD4A15D46BE788626B /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAF240ED81D4148C33D08C4 /* AuthView.swift */; };
 		C53C89B4358292B9FFE2EE50 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = FD974902E829165A98872A67 /* DesignSystem */; };
 		D7101F10406341784EC9E224 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F20F0B65EA7685811FE51C2 /* RootView.swift */; };
@@ -46,6 +47,7 @@
 		5FC94D626F8EEE84B7F635C8 /* ManageTopicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageTopicsView.swift; sourceTree = "<group>"; };
 		64D9C7402BD61A4A65DF38BC /* Breeves.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Breeves.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C78F5966A7464E758A87241 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		802FC7F2D30F986D71486741 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Secrets.plist; sourceTree = "<group>"; };
 		96780054C227C43785E65D46 /* ArticleCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCardView.swift; sourceTree = "<group>"; };
 		AAA55B983B8F0CF1AA69676F /* BreevesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreevesApp.swift; sourceTree = "<group>"; };
 		E335285CC4C7C920E29DEF0C /* DeliveryTimeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTimeSheet.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				22D9D90D5D3661EB697FE0E6 /* Assets.xcassets */,
 				AAA55B983B8F0CF1AA69676F /* BreevesApp.swift */,
 				F56390C1E55E528339BB2E60 /* Info.plist */,
+				802FC7F2D30F986D71486741 /* Secrets.plist */,
 			);
 			path = Breeves;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				236978393D56ACEACD0A41D9 /* Assets.xcassets in Resources */,
+				C085EADDD54931B411FF481C /* Secrets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

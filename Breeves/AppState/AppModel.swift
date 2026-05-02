@@ -57,6 +57,29 @@ public final class AppModel {
         let args = ProcessInfo.processInfo.arguments
         let demoMode = args.contains("-BREEVES_DEMO") && backend.mode == .mock
 
+        // Live backend debug bypass: simulator's Apple/Google sign-in flows
+        // are broken on iOS 26 (passcode pref pane regression + missing
+        // GOOGLE_CLIENT_ID), so this lets us land a real Supabase JWT for
+        // backend testing. Reads -BREEVES_DEBUG_EMAIL and
+        // -BREEVES_DEBUG_PASSWORD from launch args; never bake credentials
+        // into the binary.
+        if backend.mode == .live, args.contains("-BREEVES_LIVE_DEBUG_USER") {
+            if let email = launchArg(args, "-BREEVES_DEBUG_EMAIL"),
+               let password = launchArg(args, "-BREEVES_DEBUG_PASSWORD") {
+                do {
+                    let u = try await backend.auth.signInWithEmailPassword(email: email, password: password)
+                    self.user = u
+                    await loadAfterAuth()
+                    return
+                } catch {
+                    print("[BREEVES_LIVE_DEBUG_USER] sign-in failed: \(error)")
+                    // Fall through to normal auth screen.
+                }
+            } else {
+                print("[BREEVES_LIVE_DEBUG_USER] missing -BREEVES_DEBUG_EMAIL or -BREEVES_DEBUG_PASSWORD")
+            }
+        }
+
         // Direct routes for screenshot capture
         if backend.mode == .mock && args.contains("-BREEVES_TOPICS") {
             try? await Task.sleep(for: .milliseconds(50))
@@ -230,4 +253,15 @@ public final class AppModel {
         isCompletionShown = false
         route = .auth
     }
+}
+
+/// Reads `-Key Value` pairs from process launch arguments. Xcode passes
+/// scheme-level arguments as `["-MyKey", "myvalue"]` so the value is
+/// always the next array element after the key. Returns nil if missing.
+@MainActor
+private func launchArg(_ args: [String], _ key: String) -> String? {
+    guard let i = args.firstIndex(of: key), i + 1 < args.count else { return nil }
+    let v = args[i + 1]
+    if v.isEmpty || v.hasPrefix("-") { return nil }
+    return v
 }

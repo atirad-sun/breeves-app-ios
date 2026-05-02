@@ -76,6 +76,9 @@ public struct Article: Codable, Hashable, Identifiable, Sendable {
     public let headline: String
     public let estimatedReadTimeMinutes: Int
     public let source: String?
+    /// Original article URL on the publisher's site. Optional for backward
+    /// compatibility with fixture briefings that don't carry a real URL.
+    public let url: String?
     public let universalMode: UniversalMode
     public let topicSpecificMode: TopicSpecificMode
     public let executiveMode: ExecutiveMode
@@ -85,6 +88,7 @@ public struct Article: Codable, Hashable, Identifiable, Sendable {
         headline: String,
         estimatedReadTimeMinutes: Int,
         source: String? = nil,
+        url: String? = nil,
         universalMode: UniversalMode,
         topicSpecificMode: TopicSpecificMode,
         executiveMode: ExecutiveMode
@@ -93,6 +97,7 @@ public struct Article: Codable, Hashable, Identifiable, Sendable {
         self.headline = headline
         self.estimatedReadTimeMinutes = estimatedReadTimeMinutes
         self.source = source
+        self.url = url
         self.universalMode = universalMode
         self.topicSpecificMode = topicSpecificMode
         self.executiveMode = executiveMode

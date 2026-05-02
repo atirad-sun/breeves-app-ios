@@ -14,6 +14,8 @@ public final class GoogleSignInCoordinator {
 
     private init() {}
 
+    public var isConfigured: Bool { configured }
+
     public func configure(clientID: String) {
         guard !configured else { return }
         GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
@@ -21,6 +23,10 @@ public final class GoogleSignInCoordinator {
     }
 
     public func signIn(presenting: UIViewController) async throws -> (idToken: String, accessToken: String) {
+        // GID crashes hard with NSInvalidArgumentException if configuration
+        // is nil. Throw a typed error instead so the UI can show a polite
+        // message ("Google Sign-In not set up yet — try Apple instead.").
+        guard configured else { throw GoogleSignInError.notConfigured }
         let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting)
         guard let idToken = result.user.idToken?.tokenString else {
             throw GoogleSignInError.missingIDToken
@@ -40,11 +46,13 @@ public final class GoogleSignInCoordinator {
 public enum GoogleSignInError: Error, LocalizedError {
     case missingIDToken
     case noPresentingViewController
+    case notConfigured
 
     public var errorDescription: String? {
         switch self {
         case .missingIDToken: return "Google sign-in returned no ID token."
         case .noPresentingViewController: return "Couldn't find a view controller to present sign-in."
+        case .notConfigured: return "Google Sign-In isn't set up yet. Try Apple instead."
         }
     }
 }

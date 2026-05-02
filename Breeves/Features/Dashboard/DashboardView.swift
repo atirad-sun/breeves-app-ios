@@ -280,7 +280,11 @@ struct DashboardView: View {
                 lens: app.globalLens,
                 isRead: app.readArticleIds.contains(article.id),
                 onOpenFull: {
-                    fullArticleURL = URL(string: "https://breeves.app/articles/\(article.id)")
+                    // Prefer the publisher's URL; fall back to the in-app
+                    // article-detail placeholder if the article is a fixture
+                    // without a real source URL.
+                    fullArticleURL = article.url.flatMap(URL.init(string:))
+                        ?? URL(string: "https://breeves.app/articles/\(article.id)")
                 }
             )
             .padding(.horizontal, BreevesSpace.s5)

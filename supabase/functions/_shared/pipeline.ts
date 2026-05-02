@@ -19,6 +19,9 @@ export interface PipelineArticle {
     headline: string;
     estimated_read_time_minutes: number;
     source: string;
+    /// Original article URL on the publisher's site. Powers the "Read full"
+    /// link in the iOS card footer.
+    url: string;
     universal_mode: {
         gist: string;
         ripple_effect: string;
@@ -132,6 +135,7 @@ export async function runTopicPipeline(
                 headline: a.headline,
                 estimated_read_time_minutes: a.estimated_read_time_minutes,
                 source: c.source,
+                url: c.url,
                 universal_mode: a.universal_mode,
                 topic_specific_mode: a.topic_specific_mode,
                 executive_mode: a.executive_mode,

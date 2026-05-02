@@ -85,6 +85,12 @@ public final class MockAuthService: AuthService, @unchecked Sendable {
         return user
     }
 
+    public func signInWithEmailPassword(email: String, password: String) async throws -> BreevesUser {
+        let user = BreevesUser(id: "mock-email-user", email: email, provider: "email")
+        await backend.setUser(user)
+        return user
+    }
+
     public func signOut() async throws {
         await backend.setUser(nil)
     }

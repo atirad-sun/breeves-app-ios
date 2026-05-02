@@ -9,6 +9,15 @@ struct AuthView: View {
     @State private var rawNonce: String = ""
     @State private var errorMessage: String?
 
+    /// Mock backend always shows Google for the demo. Live backend hides
+    /// it when GOOGLE_CLIENT_ID is missing — invoking GID without a
+    /// configured clientID crashes the app via NSInvalidArgumentException.
+    private var isGoogleAvailable: Bool {
+        if app.backend.mode == .mock { return true }
+        guard let id = app.backend.googleClientID, !id.isEmpty else { return false }
+        return true
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             Spacer(minLength: 0)
@@ -53,27 +62,29 @@ struct AuthView: View {
                 .frame(height: 52)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                Button {
-                    Task { await mockGoogleSignIn() }
-                } label: {
-                    HStack(spacing: 10) {
-                        GoogleGMark().frame(width: 20, height: 20)
-                        Text("Continue with Google")
-                            .breevesBodyL()
-                            .fontWeight(.semibold)
-                            .foregroundStyle(BreevesColor.textPrimary)
+                if isGoogleAvailable {
+                    Button {
+                        Task { await mockGoogleSignIn() }
+                    } label: {
+                        HStack(spacing: 10) {
+                            GoogleGMark().frame(width: 20, height: 20)
+                            Text("Continue with Google")
+                                .breevesBodyL()
+                                .fontWeight(.semibold)
+                                .foregroundStyle(BreevesColor.textPrimary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 52)
+                        .background(BreevesColor.bgElevated1)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(BreevesColor.hairlineStandard, lineWidth: 1)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 52)
-                    .background(BreevesColor.bgElevated1)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(BreevesColor.hairlineStandard, lineWidth: 1)
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Continue with Google")
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel("Continue with Google")
 
                 if let error = errorMessage {
                     Text(error)
@@ -117,6 +128,10 @@ struct AuthView: View {
     }
 
     private func liveGoogleSignIn() async {
+        guard GoogleSignInCoordinator.shared.isConfigured else {
+            errorMessage = "Google Sign-In isn't set up yet. Use Continue with Apple instead."
+            return
+        }
         guard let presenter = topViewController() else {
             errorMessage = "Couldn't open Google sign-in."
             return
@@ -128,6 +143,8 @@ struct AuthView: View {
                 accessToken: tokens.accessToken
             )
             await app.handleSignedIn(user)
+        } catch let err as GoogleSignInError {
+            errorMessage = err.errorDescription ?? "Google sign-in failed."
         } catch {
             errorMessage = "Google sign-in failed."
         }
