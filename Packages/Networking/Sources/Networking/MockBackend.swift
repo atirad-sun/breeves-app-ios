@@ -169,9 +169,10 @@ public final class MockBriefingService: BriefingService, @unchecked Sendable {
     private let backend: MockBackend
     public init(backend: MockBackend) { self.backend = backend }
 
-    public func fetchToday(for user: BreevesUser, topics: [UserTopic]) async throws -> DailyBriefing {
+    public func fetchToday(for user: BreevesUser, topics: [UserTopic], force: Bool) async throws -> DailyBriefing {
         // Make sure the backend has the latest topics — useful when caller
-        // passes the freshly-edited list.
+        // passes the freshly-edited list. Mock backend regenerates on every
+        // call regardless of `force`; only the live service distinguishes.
         await backend.setTopics(topics)
         let today = ISO8601DateFormatter.dateOnly.string(from: Date())
         return await backend.generateBriefing(for: today)

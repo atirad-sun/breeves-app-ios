@@ -18,7 +18,10 @@
 // double-billed.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
-import { runBriefingPipeline } from '../_shared/pipeline.ts'
+import { runBriefingPipeline, type SeenSet } from '../_shared/pipeline.ts'
+import { canonicalUrl } from '../_shared/news/dispatcher.ts'
+
+const HISTORY_LOOKBACK_DAYS = 7
 
 const MAX_USERS_PER_TICK = 8
 const DELIVERY_WINDOW_MIN = 5
@@ -176,10 +179,28 @@ Deno.serve(async (req) => {
             }
 
             const dateISO = todayInTz(profile.tz)
+
+            // Per-user cross-day dedup: load last 7 days of history so the
+            // pipeline excludes anything the user has already seen.
+            const sinceDate = new Date()
+            sinceDate.setUTCDate(sinceDate.getUTCDate() - HISTORY_LOOKBACK_DAYS)
+            const sinceISO = sinceDate.toISOString().slice(0, 10)
+            const { data: history } = await supabase
+                .from('briefing_articles')
+                .select('canonical_url, headline')
+                .eq('user_id', profile.id)
+                .gte('first_seen_date', sinceISO)
+                .returns<{ canonical_url: string; headline: string }[]>()
+            const alreadySeen: SeenSet = {
+                urls: new Set((history ?? []).map((r) => r.canonical_url)),
+                headlines: (history ?? []).map((r) => r.headline),
+            }
+
             const { results } = await runBriefingPipeline(
                 topics.map((t) => t.topic),
                 apiKey,
                 dateISO,
+                { alreadySeen },
             )
 
             const payloadTopics = results.map((r) => ({
@@ -196,6 +217,30 @@ Deno.serve(async (req) => {
                     generated_at: new Date().toISOString(),
                 })
             if (upsertErr) throw new Error(`upsert: ${upsertErr.message}`)
+
+            // History insert: idempotent on (user_id, canonical_url),
+            // best-effort. See generate_daily_briefing for rationale.
+            const historyRows = results.flatMap((r) =>
+                r.articles.map((a) => ({
+                    user_id: profile.id,
+                    canonical_url: canonicalUrl(a.url),
+                    article_id: a.id,
+                    headline: a.headline,
+                    source: a.source,
+                    url: a.url,
+                    topic: r.topic,
+                    first_seen_date: dateISO,
+                    payload: a,
+                })),
+            )
+            if (historyRows.length > 0) {
+                const { error: histErr } = await supabase
+                    .from('briefing_articles')
+                    .upsert(historyRows, { onConflict: 'user_id,canonical_url', ignoreDuplicates: true })
+                if (histErr) {
+                    console.warn(`tick_briefings: ${profile.id} history upsert failed: ${histErr.message}`)
+                }
+            }
 
             const { error: stampErr } = await supabase
                 .from('profiles')

@@ -30,6 +30,11 @@ public final class AppModel {
     public var briefingError: String?
     public var isCompletionShown: Bool = false
 
+    /// Timestamp of the last forced refresh. Used to debounce rapid taps
+    /// on the refresh button so a double-tap can't double-bill Claude.
+    private var lastForcedRefreshAt: Date?
+    private let forcedRefreshDebounce: TimeInterval = 30
+
     public let backend: BreevesBackend
     public let cache: BriefingCache
 
@@ -201,21 +206,42 @@ public final class AppModel {
 
     // MARK: - Dashboard
 
-    public func loadBriefing() async {
+    public func loadBriefing(force: Bool = false) async {
         guard let user else { return }
+
+        // Forced refresh debounce: ignore a forced call within
+        // `forcedRefreshDebounce` seconds of the last one. Protects against
+        // accidental double-taps and rapid retries that would otherwise
+        // fire Claude generations in quick succession.
+        if force, let last = lastForcedRefreshAt,
+           Date().timeIntervalSince(last) < forcedRefreshDebounce {
+            return
+        }
+
+        // Cache short-circuit: when not forcing, a populated SwiftData
+        // cache for today is authoritative — skip the network entirely.
+        // The backend is also idempotent, but the cheapest call is the
+        // one we don't make.
+        if !force, let cached = try? cache.loadToday() {
+            briefing = cached
+            return
+        }
+
         isLoadingBriefing = true
         briefingError = nil
         defer { isLoadingBriefing = false }
 
-        // Try cache first
-        if let cached = try? cache.loadToday() {
+        // Show cached content immediately while the forced refresh runs,
+        // so the dashboard isn't blank during the regeneration round-trip.
+        if force, let cached = try? cache.loadToday() {
             briefing = cached
         }
 
         do {
-            let fresh = try await backend.briefings.fetchToday(for: user, topics: topics)
+            let fresh = try await backend.briefings.fetchToday(for: user, topics: topics, force: force)
             briefing = fresh
             try? cache.upsert(fresh)
+            if force { lastForcedRefreshAt = Date() }
         } catch {
             if briefing == nil {
                 briefingError = "Couldn't refresh. Showing cached brief."

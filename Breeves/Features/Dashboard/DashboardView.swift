@@ -259,16 +259,69 @@ struct DashboardView: View {
         let articles = topic.articles
         let pageCount = articles.count + 1
 
-        return TabView(selection: $activeArticle) {
-            ForEach(Array(articles.enumerated()), id: \.element.id) { idx, article in
-                articlePage(article: article, index: idx, total: articles.count)
-                    .tag(idx)
+        return Group {
+            if articles.isEmpty {
+                emptyTopicPage(briefing: briefing, currentTopic: topic)
+            } else {
+                TabView(selection: $activeArticle) {
+                    ForEach(Array(articles.enumerated()), id: \.element.id) { idx, article in
+                        articlePage(article: article, index: idx, total: articles.count)
+                            .tag(idx)
+                    }
+                    nudgeCard(briefing: briefing, currentTopic: topic)
+                        .tag(pageCount - 1)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .indexViewStyle(.page(backgroundDisplayMode: .never))
             }
-            nudgeCard(briefing: briefing, currentTopic: topic)
-                .tag(pageCount - 1)
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .indexViewStyle(.page(backgroundDisplayMode: .never))
+    }
+
+    @ViewBuilder
+    private func emptyTopicPage(briefing: DailyBriefing, currentTopic: TopicBriefing) -> some View {
+        // No fresh stories landed for this topic today (freshness gate +
+        // 7-day dedup left nothing). We surface that honestly rather than
+        // padding with stale or recycled content.
+        let nextIdx = (activeTopic + 1) % briefing.topics.count
+        let isLastTopic = activeTopic == briefing.topics.count - 1
+        let next = briefing.topics[nextIdx]
+
+        ScrollView {
+            VStack(alignment: .leading, spacing: BreevesSpace.s4) {
+                Spacer().frame(height: BreevesSpace.s7)
+                Hairline(strength: .standard)
+                Spacer().frame(height: BreevesSpace.s5)
+
+                Text("NO FRESH STORIES")
+                    .breevesLabelM()
+                    .foregroundStyle(BreevesColor.textTertiary)
+                Text("No new \(currentTopic.topic) stories worth your time today.")
+                    .breevesHeadlineL()
+                    .foregroundStyle(BreevesColor.textPrimary)
+                Text("Breeves skipped this topic rather than recycle stale or duplicate news. Tomorrow's brief lands at \(deliveryTime()).")
+                    .breevesBodyM()
+                    .foregroundStyle(BreevesColor.textSecondary)
+
+                if !isLastTopic {
+                    Spacer().frame(height: BreevesSpace.s5)
+                    Hairline(strength: .faint)
+                    Spacer().frame(height: BreevesSpace.s4)
+                    HStack(alignment: .firstTextBaseline, spacing: 0) {
+                        Text("Next: ")
+                            .breevesHeadlineL()
+                            .foregroundStyle(BreevesColor.textSecondary)
+                        Text(next.topic)
+                            .breevesHeadlineL()
+                            .foregroundStyle(BreevesColor.textPrimary)
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+            }
+            .padding(.horizontal, BreevesSpace.s5)
+            .padding(.top, headerOffsetForContent)
+            .padding(.bottom, BreevesSpace.s7 + 64)
+        }
+        .scrollIndicators(.hidden)
     }
 
     private func articlePage(article: Article, index: Int, total: Int) -> some View {
@@ -473,7 +526,7 @@ struct DashboardView: View {
                 .breevesCaption()
                 .foregroundStyle(BreevesColor.stateDanger)
             Button {
-                Task { await app.loadBriefing() }
+                Task { await app.loadBriefing(force: true) }
             } label: {
                 Text("Retry")
                     .breevesCaption()

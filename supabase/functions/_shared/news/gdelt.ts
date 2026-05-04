@@ -72,16 +72,20 @@ interface GdeltResponse {
     articles?: GdeltArticle[];
 }
 
-function parseGdeltDate(s: string): string {
-    // GDELT format: 20260315T143000Z → 2026-03-15T14:30:00Z
-    if (s.length < 15) return new Date().toISOString();
+function parseGdeltDate(s: string): string | null {
+    // GDELT format: 20260315T143000Z → 2026-03-15T14:30:00Z. Returns
+    // null on malformed input so the candidate gets dropped rather than
+    // backfilled with fetch-time (which is how years-old articles ended
+    // up tagged as "today" in earlier briefings).
+    if (s.length < 15) return null;
     const yyyy = s.slice(0, 4);
     const mm = s.slice(4, 6);
     const dd = s.slice(6, 8);
     const HH = s.slice(9, 11);
     const MM = s.slice(11, 13);
     const SS = s.slice(13, 15);
-    return `${yyyy}-${mm}-${dd}T${HH}:${MM}:${SS}Z`;
+    const iso = `${yyyy}-${mm}-${dd}T${HH}:${MM}:${SS}Z`;
+    return Number.isNaN(Date.parse(iso)) ? null : iso;
 }
 
 const QUALITY_DOMAIN_SET = new Set(QUALITY_DOMAINS);
@@ -171,12 +175,17 @@ export async function searchGDELT(query: string, limit: number): Promise<Candida
         });
 
     return filtered
-        .map((a) => ({
-            url: a.url,
-            headline: a.title,
-            source: `GDELT (${a.domain})`,
-            publishedAt: parseGdeltDate(a.seendate),
-        }))
+        .map((a) => {
+            const publishedAt = parseGdeltDate(a.seendate);
+            if (!publishedAt) return null;
+            return {
+                url: a.url,
+                headline: a.title,
+                source: `GDELT (${a.domain})`,
+                publishedAt,
+            };
+        })
+        .filter((c): c is Candidate => c !== null)
         .slice(0, limit);
 }
 

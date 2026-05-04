@@ -45,8 +45,9 @@ export function selectSourcesForTopic(topic: string): NewsSource[] {
 }
 
 /// Drop scheme/www/trailing-slash variation so the same article from two
-/// surfaces dedupes cleanly.
-function canonicalUrl(url: string): string {
+/// surfaces dedupes cleanly. Exported so cross-day history dedup (in the
+/// edge functions) keys on the same canonical form as intra-briefing dedup.
+export function canonicalUrl(url: string): string {
     try {
         const u = new URL(url);
         const host = u.hostname.replace(/^www\./, "");
@@ -78,16 +79,29 @@ function headlineSimilar(a: string, b: string): boolean {
     return intersection / union >= 0.6;
 }
 
+export interface SeenSet {
+    /// Canonical URLs already shown to this user in the dedup window.
+    urls: Set<string>;
+    /// Headlines already shown — used for fuzzy-match dedup since two
+    /// outlets covering the same story have different URLs.
+    headlines: string[];
+}
+
 /// Dedupe by canonical URL first, then by headline similarity. Stable
-/// ordering: earlier candidates win.
-export function dedupe(candidates: Candidate[]): Candidate[] {
+/// ordering: earlier candidates win. When `alreadySeen` is supplied,
+/// candidates matching anything in it are also dropped — this is how
+/// cross-day dedup (against the briefing_articles history table) lands
+/// in the same code path as intra-briefing dedup.
+export function dedupe(candidates: Candidate[], alreadySeen?: SeenSet): Candidate[] {
     const out: Candidate[] = [];
-    const seenUrls = new Set<string>();
+    const seenUrls = new Set<string>(alreadySeen?.urls ?? []);
+    const seenHeadlines: string[] = [...(alreadySeen?.headlines ?? [])];
     for (const c of candidates) {
         const key = canonicalUrl(c.url);
         if (seenUrls.has(key)) continue;
-        if (out.some((o) => headlineSimilar(o.headline, c.headline))) continue;
+        if (seenHeadlines.some((h) => headlineSimilar(h, c.headline))) continue;
         seenUrls.add(key);
+        seenHeadlines.push(c.headline);
         out.push(c);
     }
     return out;
@@ -99,6 +113,7 @@ export function dedupe(candidates: Candidate[]): Candidate[] {
 export async function fetchCandidates(
     topic: string,
     perSourceLimit = 12,
+    alreadySeen?: SeenSet,
 ): Promise<Candidate[]> {
     const sources = selectSourcesForTopic(topic);
     if (sources.length === 0) {
@@ -115,7 +130,7 @@ export async function fetchCandidates(
         if (r.status === "fulfilled") all.push(...r.value);
     }
 
-    return dedupe(all);
+    return dedupe(all, alreadySeen);
 }
 
 /// Rank candidates by a heuristic blend: published-recency × source-quality.
@@ -128,4 +143,20 @@ export function rankAndPick(candidates: Candidate[], n: number): Candidate[] {
         return bt - at;
     });
     return sorted.slice(0, n);
+}
+
+/// Drop candidates older than `maxAgeHours` relative to `now`. Also drops
+/// candidates whose publishedAt fails to parse — better to lose them than
+/// treat unparseable timestamps as "now" and serve old news.
+export function filterFresh(
+    candidates: Candidate[],
+    maxAgeHours: number,
+    now: Date = new Date(),
+): Candidate[] {
+    const cutoff = now.getTime() - maxAgeHours * 3600 * 1000;
+    return candidates.filter((c) => {
+        const t = Date.parse(c.publishedAt);
+        if (Number.isNaN(t)) return false;
+        return t >= cutoff;
+    });
 }

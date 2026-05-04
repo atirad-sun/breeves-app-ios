@@ -4,7 +4,15 @@ import Supabase
 
 public protocol BriefingService: AnyObject, Sendable {
     /// Fetch today's briefing for the current user (or generate via Edge Function if missing).
-    func fetchToday(for user: BreevesUser, topics: [UserTopic]) async throws -> DailyBriefing
+    /// When `force` is true, bypass the backend's idempotency check so a manual refresh
+    /// regenerates today's briefing instead of returning the cached row.
+    func fetchToday(for user: BreevesUser, topics: [UserTopic], force: Bool) async throws -> DailyBriefing
+}
+
+public extension BriefingService {
+    func fetchToday(for user: BreevesUser, topics: [UserTopic]) async throws -> DailyBriefing {
+        try await fetchToday(for: user, topics: topics, force: false)
+    }
 }
 
 public final class SupabaseBriefingService: BriefingService, @unchecked Sendable {
@@ -14,13 +22,24 @@ public final class SupabaseBriefingService: BriefingService, @unchecked Sendable
         self.client = client
     }
 
-    public func fetchToday(for user: BreevesUser, topics: [UserTopic]) async throws -> DailyBriefing {
+    public func fetchToday(for user: BreevesUser, topics: [UserTopic], force: Bool) async throws -> DailyBriefing {
         let today = ISO8601DateFormatter.dateOnly.string(from: Date())
+
+        if force {
+            // Forced refresh: invoke first with ?force=true so the backend
+            // regenerates, then read.
+            _ = try await client.functions.invoke(
+                "generate_daily_briefing?force=true",
+                options: FunctionInvokeOptions(method: .post)
+            ) as Void
+            return try await readBriefing(userID: user.id, today: today)
+        }
 
         do {
             return try await readBriefing(userID: user.id, today: today)
         } catch {
-            // Try generating, then re-read.
+            // Read miss → generate (backend's idempotency check is a no-op
+            // here since the row didn't exist).
             _ = try await client.functions.invoke(
                 "generate_daily_briefing",
                 options: FunctionInvokeOptions(method: .post)

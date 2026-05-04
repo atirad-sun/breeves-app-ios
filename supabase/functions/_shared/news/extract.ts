@@ -90,6 +90,12 @@ function firstParagraphs(html: string, max: number): string {
 
 /// Extracts a best-effort article body from a candidate's URL. Populates
 /// `body` in place and returns the same Candidate. Never throws.
+///
+/// Also attempts to verify/correct the candidate's `publishedAt` from the
+/// page's own meta tags. Source listing APIs sometimes return "indexed
+/// today" timestamps for articles that are actually years old; trusting
+/// the article's own `article:published_time` (or equivalent) catches
+/// that case before the freshness gate runs.
 export async function extractFullText(candidate: Candidate): Promise<Candidate> {
     if (candidate.body && candidate.body.length > 0) return candidate;
 
@@ -107,6 +113,30 @@ export async function extractFullText(candidate: Candidate): Promise<Candidate> 
     // Cap total length so Claude calls stay reasonably bounded.
     const combined = [description, paragraphs].filter((s) => s.length > 0).join("\n\n");
     candidate.body = combined.slice(0, 12_000);
+
+    // Pull the article's own published timestamp if available. We trust
+    // it over the source-API value when the two disagree by more than a
+    // few hours — the article meta is closer to ground truth.
+    const metaPublished = metaContent(html, [
+        "article:published_time",
+        "article:published",
+        "datePublished",
+        "publishdate",
+        "pubdate",
+    ]);
+    if (metaPublished) {
+        const t = Date.parse(metaPublished);
+        if (!Number.isNaN(t)) {
+            const sourceT = Date.parse(candidate.publishedAt);
+            const driftHours = Number.isNaN(sourceT)
+                ? Infinity
+                : Math.abs(t - sourceT) / 3600_000;
+            if (driftHours > 6) {
+                candidate.publishedAt = new Date(t).toISOString();
+            }
+        }
+    }
+
     return candidate;
 }
 

@@ -51,8 +51,8 @@ targets:
       path: Breeves/Info.plist
       properties:
         CFBundleDisplayName: Breeves
-        CFBundleShortVersionString: "1.0.0"
-        CFBundleVersion: "42"
+        CFBundleShortVersionString: "1.1.0"
+        CFBundleVersion: "43"
         UILaunchScreen:
           UIColorName: LaunchBackground
           UIImageName: LaunchBrassMark

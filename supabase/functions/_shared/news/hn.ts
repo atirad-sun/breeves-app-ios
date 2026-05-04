@@ -21,11 +21,17 @@ interface AlgoliaResponse {
 }
 
 export async function searchHN(query: string, limit: number): Promise<Candidate[]> {
+    // Algolia takes a unix-second cutoff. Match the dispatcher's
+    // freshness gate (36h) so HN's default ordering can't smuggle in
+    // older highly-upvoted posts that drown out genuinely fresh stories.
+    const cutoff = Math.floor((Date.now() - 36 * 3600 * 1000) / 1000);
+
     const params = new URLSearchParams({
         query,
         tags: "story",
         // Bias toward higher-quality posts; HN signal is messy without this.
-        numericFilters: "points>=20",
+        // created_at_i is HN's unix-second post timestamp.
+        numericFilters: `points>=20,created_at_i>${cutoff}`,
         hitsPerPage: String(Math.min(limit * 3, 50)),
     });
 
@@ -45,12 +51,14 @@ export async function searchHN(query: string, limit: number): Promise<Candidate[
     }
 
     return json.hits
-        .filter((h) => h.url && h.title)
+        .filter((h) => h.url && h.title && h.created_at)
         .map((h) => ({
             url: h.url!,
             headline: h.title!,
             source: "Hacker News",
-            publishedAt: h.created_at ?? new Date().toISOString(),
+            // Real timestamp only — backfilling with fetch-time is how
+            // stale posts get smuggled past the freshness gate.
+            publishedAt: h.created_at!,
         }))
         .slice(0, limit);
 }
